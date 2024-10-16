@@ -3,10 +3,13 @@ DES424 Cloud App Development Project - SIIT Thammasat University Bangkok Group 0
 
 ## Installation Instruction
 
-Follow this guide:
 Windows OS: https://docs.flutter.dev/get-started/install/windows/mobile
 
-MacOS: https://docs.flutter.dev/get-started/install/macos/mobile-ios
+MacOS for dev with iOS devices: https://docs.flutter.dev/get-started/install/macos/mobile-ios
+
+Use command ``flutter doctor`` to check for necessary installations 
+
+### You need for Installation:
 
 Install VS Code
 
@@ -18,4 +21,4 @@ Install Chrome
 
 Install Android Toolchain
 
-Clone Repository
+Clone this Repository
