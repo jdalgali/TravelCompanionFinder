@@ -1,0 +1,6 @@
+git+https://github.com/OrbitPeppermint/TravelCompanionFinder.git
+flutter ==
+android_studio == 
+chrome == 
+android_toolchain == 
+
