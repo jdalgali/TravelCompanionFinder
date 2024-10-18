@@ -5,7 +5,7 @@ DES424 Cloud App Development Project - SIIT Thammasat University Bangkok Group 0
 
 Flutter Installation:
 
-Windows OS: https://docs.flutter.dev/get-started/install/windows/mobile
+Windows OS (only Android): https://docs.flutter.dev/get-started/install/windows/mobile
 
 MacOS for dev with iOS devices: https://docs.flutter.dev/get-started/install/macos/mobile-ios
 
