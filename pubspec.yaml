@@ -16,6 +16,7 @@ dependencies:
   vector_math: ^2.0.0
 
 dev_dependencies:
+  change_app_package_name: ^1.4.0
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter

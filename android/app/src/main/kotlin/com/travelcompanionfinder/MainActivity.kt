@@ -1,4 +1,4 @@
-package com.example.templates
+package com.travelcompanionfinder
 
 import io.flutter.embedding.android.FlutterActivity
 
