@@ -17,40 +17,35 @@ class _AboutScreenState extends State<AboutScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Text(
-            'MIT License',
+            'About',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           const Text(
-            'Copyright © 2019 Mitesh Chodvadiya\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or modified  copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.',
+            'This cross-plattform application is build inside the Course DES424-Cloud Application Development from Group 4 at SIIT Thammasat University. ',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 30),
           const Text(
-            'The app is made from a fork of:',
+            'Find this application on Github:',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16),
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'Best Flutter UI Templates',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
+         
           const SizedBox(height: 20),
           GestureDetector(
             onTap: () async {
               final url = Uri(
                 scheme: 'https',
                 host: 'github.com',
-                path: '/nohli/flutter_templates',
+                path: '/orbitpeppermint/travelcompanionfinder',
               );
               if (await canLaunchUrl(url)) launchUrl(url);
             },
             child: const Text(
-              'The code can be found here.',
+              'Travel Companion Finder.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.blue,

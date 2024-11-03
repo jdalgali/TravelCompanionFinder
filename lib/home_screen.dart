@@ -80,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               context,
                               MaterialPageRoute<dynamic>(
                                 builder: (BuildContext context) =>
+                                // on this point the menu is connected to the applications
                                     homeList[index].navigateScreen,
                               ),
                             );
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
+// I guess this is the top bar?
   Widget appBar() {
     return SizedBox(
       height: AppBar().preferredSize.height,
@@ -115,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               child: Padding(
                 padding: EdgeInsets.only(top: 4),
                 child: Text(
-                  'Flutter UI',
+                  'Lets travel!',
                   style: TextStyle(
                     fontSize: 22,
                     color: AppTheme.darkText,

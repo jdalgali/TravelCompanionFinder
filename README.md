@@ -23,4 +23,4 @@ Install Chrome
 
 Install Android Toolchain
 
-Clone this Repository
+Clone this Repository (make sure that the file path is short as possible, home directory is recommended)

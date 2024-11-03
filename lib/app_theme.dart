@@ -11,6 +11,8 @@ class AppTheme {
   static const Color darkGrey = Color(0xFF313A44);
 
   static const Color darkText = Color(0xFF253840);
+  static const Color selectedItemColor =  Color.fromARGB(255, 94, 94, 94);
+  static const Color unselectedItemColor = Colors.grey;
   static const Color darkerText = Color(0xFF17262A);
   static const Color lightText = Color(0xFF4A6572);
   static const Color deactivatedText = Color(0xFF767676);
