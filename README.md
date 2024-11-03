@@ -7,7 +7,7 @@ Flutter Installation:
 
 Windows OS (only Android): https://docs.flutter.dev/get-started/install/windows/mobile
 
-MacOS for dev with iOS Simulator, write me a message if you want to try physical device test on your iPhone: https://docs.flutter.dev/get-started/install/macos/mobile-ios
+MacOS for dev with iOS Simulator, write me a message if you want to try physical device test on your iPhone, I have a apple dev acc: https://docs.flutter.dev/get-started/install/macos/mobile-ios
 
 Use command ``flutter doctor`` to check for necessary installations 
 
