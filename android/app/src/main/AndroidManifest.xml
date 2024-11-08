@@ -11,7 +11,7 @@
     </queries>
 
     <application
-        android:label="Templates"
+        android:label="Travel Companion Finder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

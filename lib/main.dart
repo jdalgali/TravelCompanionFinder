@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:templates/bottom_bar.dart';
+import 'package:travelcompanionfinder/bottom_bar.dart';
 
 import 'app_theme.dart';
 import 'navigation_home_screen.dart';
