@@ -1,5 +1,6 @@
 git+https://github.com/OrbitPeppermint/TravelCompanionFinder.git
-flutter ==
+dart ">= 3.2.0-194.0.dev <4.0.0"
+flutter ">= 3.10.0"
 android_studio == 
 chrome == 
 android_toolchain == 
