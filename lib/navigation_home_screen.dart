@@ -16,7 +16,6 @@ class NavigationHomeScreen extends StatefulWidget {
 }
 
 class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
-  //TODO build bottombar here inside?
   Widget screenView = const MyHomePage();
   // here home_drawer.dart call, I guess it's the side menu bar => TODO: disconnect
   DrawerIndex drawerIndex = DrawerIndex.home;

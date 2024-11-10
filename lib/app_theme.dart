@@ -20,6 +20,8 @@ class AppTheme {
   static const Color chipBackground = Color(0xFFEEF1F3);
   static const Color spacer = Color(0xFFF2F2F2);
   static const String fontName = 'WorkSans';
+  static const Color primaryColor = Color(0xFF54D3C2);
+  static const Color secondaryColor = Color(0xFF54D3C2);
 
   static const TextTheme textTheme = TextTheme(
     headlineMedium: display1,
