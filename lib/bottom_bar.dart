@@ -13,9 +13,10 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int selectedIndex = 1;
   static final List<Widget> _widgetOptions = <Widget>[
-    const Text("Page01, TODO"),
+    const Text("Overview Page: Page to see actual travels + Recommendation"),
     const HotelHomeScreen(),
-    const Text("Page02, TODO")
+    const Text("Chat: communication between Uploader and Searcher"),
+    const Text("Profile Page: Last Travels, Likes, Settings, Support System 'Help', Button for upload Travels => page with get back button, like initial hotel_home_screen")
   ];
 
   void onPageTap(int index) {
@@ -48,6 +49,7 @@ class _BottomBarState extends State<BottomBar> {
               color: Colors.grey.withOpacity(0.25), // Adjust color and opacity
             ),
           BottomNavigationBar(
+            iconSize: 28,
             currentIndex: selectedIndex,
             onTap: onPageTap,
             type: BottomNavigationBarType.fixed,
@@ -58,14 +60,13 @@ class _BottomBarState extends State<BottomBar> {
             unselectedItemColor: AppTheme.unselectedItemColor,
             items: const [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: "Page01"),
+                  icon: Icon(Icons.home_outlined), label: "Trips"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: "Page02"),
+                  icon: Icon(Icons.search), label: "Explore"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.sunny),
-                  activeIcon:
-                      Icon(Icons.cloud),
-                  label: "Page03")
+                  icon: Icon(Icons.messenger_outline_rounded), label: "Messages" ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline), label: "Profile")
             ],
           ),
         ],
