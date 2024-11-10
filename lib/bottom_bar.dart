@@ -70,7 +70,7 @@ class _BottomBarState extends State<BottomBar> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.messenger_outline_rounded), label: "Messages" ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline), label: "Profile")
+                  icon: Icon(Icons.person_outline), label: "Me")
             ],
           ),
         ],
