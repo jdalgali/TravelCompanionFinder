@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
       home: const Scaffold(
           body: SafeArea(

@@ -36,31 +36,40 @@ class _BottomBarState extends State<BottomBar> {
       //   elevation: 0.0,
       // ),
       // extendBodyBehindAppBar: true,
-      body: Center(
-        child: _widgetOptions[selectedIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: onPageTap,
-        type: BottomNavigationBarType.fixed,
-        elevation: 10,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: AppTheme.selectedItemColor,
-        unselectedItemColor: AppTheme.unselectedItemColor,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: "Page01"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search), label: "Page02"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.sunny),
-              activeIcon:
-                  Icon(Icons.cloud),
-              label: "Page03")
+          body: Center(
+            child: _widgetOptions[selectedIndex],
+          ),
+          bottomNavigationBar: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+        // Add a fine line as a top border for the BottomNavigationBar
+            Container(
+              height: 1, // Thickness of the line
+              color: Colors.grey.withOpacity(0.25), // Adjust color and opacity
+            ),
+          BottomNavigationBar(
+            currentIndex: selectedIndex,
+            onTap: onPageTap,
+            type: BottomNavigationBarType.fixed,
+            elevation: 10,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedItemColor: AppTheme.selectedItemColor,
+            unselectedItemColor: AppTheme.unselectedItemColor,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: "Page01"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.search), label: "Page02"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.sunny),
+                  activeIcon:
+                      Icon(Icons.cloud),
+                  label: "Page03")
+            ],
+          ),
         ],
-      ),
-      //)
+      )
     );
   }
 }

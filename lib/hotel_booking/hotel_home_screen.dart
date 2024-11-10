@@ -528,10 +528,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
         child: Material(
           child: Row(
             children: <Widget>[
-              // Container(
-              //   alignment: Alignment.centerLeft,
-              //   width: AppBar().preferredSize.height + 40,
-              //   height: AppBar().preferredSize.height,
+               Container(
+                 alignment: Alignment.centerLeft,
+                 width: AppBar().preferredSize.height + 40,
+                 height: AppBar().preferredSize.height,
               //   child: InkWell(
               //     borderRadius: const BorderRadius.all(Radius.circular(32.0)),
               //     onTap: () => Navigator.pop(context),
@@ -540,7 +540,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
               //       child: Icon(Icons.arrow_back),
               //     ),
               //   ),
-              // ),
+               ),
               const Expanded(
                 child: Center(
                   child: Text(
@@ -549,6 +549,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                       fontWeight: FontWeight.w600,
                       fontSize: 22,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
