@@ -56,6 +56,10 @@ class _BottomBarState extends State<BottomBar> {
             elevation: 10,
             showSelectedLabels: true,
             showUnselectedLabels: true,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 12.5, // Set your desired font size here
+              //fontWeight: FontWeight.bold, // Optional: Adjust font weight
+            ),
             selectedItemColor: AppTheme.selectedItemColor,
             unselectedItemColor: AppTheme.unselectedItemColor,
             items: const [
