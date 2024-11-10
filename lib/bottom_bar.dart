@@ -54,13 +54,13 @@ class _BottomBarState extends State<BottomBar> {
             onTap: onPageTap,
             type: BottomNavigationBarType.fixed,
             elevation: 10,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
             selectedItemColor: AppTheme.selectedItemColor,
             unselectedItemColor: AppTheme.unselectedItemColor,
             items: const [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.home_outlined), label: "Trips"),
+                  icon: Icon(Icons.home_outlined), label: "Travels"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.search), label: "Explore"),
               BottomNavigationBarItem(
