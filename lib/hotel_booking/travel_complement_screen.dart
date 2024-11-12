@@ -13,6 +13,7 @@ class TravelComplementScreen extends StatefulWidget{
 // this class is the page what opens when you click on a travel from anywhere(favorite, last travels, actual travel, explore page)
 //TODO: siehe hotel_list_view for idea with Hotel Data Loadout
 //Note: HotelAppTheme.buildLightTheme() ersetzt durch AppTheme
+//Todo: Design überarbeiten + connecting to ListView
 class _TravelScreen extends State<TravelComplementScreen> with TickerProviderStateMixin{
    final double infoHeight = 364.0;
   double opacity1 = 0.0;

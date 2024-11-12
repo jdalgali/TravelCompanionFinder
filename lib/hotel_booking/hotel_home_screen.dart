@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:travelcompanionfinder/hotel_booking/travel_complement_screen.dart';
 
 import 'calendar_popup_view.dart';
 import 'filters_screen.dart';
@@ -17,6 +18,7 @@ class HotelHomeScreen extends StatefulWidget {
 
 class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
+      //TODO
   List<HotelListData> hotelList = HotelListData.hotelList;
   final ScrollController _scrollController = ScrollController();
 
@@ -86,6 +88,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                           ),
                         ];
                       },
+                      // TODO ist das die Stelle?
                       body: Container(
                         color: HotelAppTheme.buildLightTheme()
                             .colorScheme
@@ -105,7 +108,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             curve: Curves.fastOutSlowIn)));
                             animationController.forward();
                             return HotelListView(
-                              callback: () {},
+                              callback: () {
+                                //TODO
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const TravelComplementScreen(),
+                                  ),
+                                );                                
+                              },
                               hotelData: hotelList[index],
                               animation: animation,
                               animationController: animationController,
@@ -145,6 +156,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 if (!snapshot.hasData) {
                   return const SizedBox();
                 } else {
+                  //TODO LISTVIEW IST DIE SEARCH ENGINE SCROLL
                   return ListView.builder(
                     itemCount: hotelList.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -158,6 +170,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 
+                      //TODO hotel_list_data aufruf
                       return HotelListView(
                         callback: () {},
                         hotelData: hotelList[index],
