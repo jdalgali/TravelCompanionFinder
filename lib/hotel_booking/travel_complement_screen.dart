@@ -518,46 +518,95 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
     );
   }
 
-  // Function to show the full text overlay with a close button
+  // Function to show the full text overlay with a close button (X)
   void _showFullTextOverlay(BuildContext context, String textContent) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (BuildContext context) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppTheme.nearlyWhite,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios, 
-                  color: AppTheme.nearlyBlack, 
-                  size: 17, ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Text(
-                  textContent,
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w200,
-                    fontSize: 14,
-                    letterSpacing: 0.27,
-                    color: AppTheme.grey,
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      fullscreenDialog: true,
+      builder: (BuildContext context) {
+        return Material(
+          color: AppTheme.nearlyWhite,
+          child: Stack(
+            children: <Widget>[
+              // Back Arrow Icon positioned on the left
+              Positioned(
+                top: MediaQuery.of(context).padding.top,
+                left: 5,
+                child: Card(
+                  color: AppTheme.nearlyWhite,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                  elevation: 2.0,
+                  child: SizedBox(
+                    width: AppBar().preferredSize.height,
+                    height: AppBar().preferredSize.height,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
+                        onTap: () => Navigator.pop(context),
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              color: AppTheme.nearlyBlack,
+                              size: 17,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+              
+              // Centered Subtitle Text
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 20,
+                left: 0,
+                right: 0,
+                child: const Center(
+                  child: Text(
+                    'About this travel:',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      letterSpacing: 0.27,
+                      color: AppTheme.darkerText,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Full text content below the top area
+              Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top + AppBar().preferredSize.height + 32.0,
+                  left: 28.0,
+                  right: 28.0,
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    textContent,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w200,
+                      fontSize: 14,
+                      letterSpacing: 0.27,
+                      color: AppTheme.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}
+
 
   Widget getTimeBoxUI(String text1, String txt2) {
     return Padding(
