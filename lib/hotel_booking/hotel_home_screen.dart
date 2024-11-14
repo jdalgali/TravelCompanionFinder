@@ -109,7 +109,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                             animationController.forward();
                             return HotelListView(
                               callback: () {
-                                //TODO
+                                //TODO DAS WAR ALLES DAS IST DIE STELLE, HotelListView Aufruf
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -170,7 +170,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                       curve: Curves.fastOutSlowIn)));
                       animationController.forward();
 
-                      //TODO hotel_list_data aufruf
+                      
                       return HotelListView(
                         callback: () {},
                         hotelData: hotelList[index],
