@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travelcompanionfinder/app_theme.dart';
-import 'package:travelcompanionfinder/hotel_booking/hotel_app_theme.dart';
 
-class TravelComplementScreen extends StatefulWidget{
+class TravelComplementScreen extends StatefulWidget {
   const TravelComplementScreen({super.key});
 
   @override
-   State<TravelComplementScreen> createState() => _TravelScreen();
+  State<TravelComplementScreen> createState() => _TravelScreen();
 }
 
 // this class is the page what opens when you click on a travel from anywhere(favorite, last travels, actual travel, explore page)
 //TODO: siehe hotel_list_view for idea with Hotel Data Loadout
 //Note: HotelAppTheme.buildLightTheme() ersetzt durch AppTheme
 //Todo: Design überarbeiten + connecting to HotelListView in hotel_home_screen.dart
-class _TravelScreen extends State<TravelComplementScreen> with TickerProviderStateMixin{
-   final double infoHeight = 364.0;
+class _TravelScreen extends State<TravelComplementScreen>
+    with TickerProviderStateMixin {
+  final double infoHeight = 364.0;
   double opacity1 = 0.0;
   double opacity2 = 0.0;
   double opacity3 = 0.0;
@@ -82,7 +81,8 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                 //TODO AWS S3 600x500 px
                 //TODO Multi Image viewer for multiple images / image stack:
                 //attention case-sensitive: everything in lowercase
-                child: Image.asset('assets/hotel/complement_picture_complement_page.png'),
+                child: Image.asset(
+                    'assets/hotel/complement_picture_complement_page.png'),
               ),
             ],
           ),
@@ -119,114 +119,111 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                         const Padding(
                           padding:
                               EdgeInsets.only(top: 32.0, left: 18, right: 16),
-                          child: 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:[
-                              Text(
-                                //TODO AWS GET DATA DB
-                                'Chiang Mai\nJungle Expedition',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22,
-                                  letterSpacing: 0.27,
-                                  color: AppTheme.darkerText,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  //TODO AWS GET DATA DB
+                                  'Chiang Mai\nJungle Expedition',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22,
+                                    letterSpacing: 0.27,
+                                    color: AppTheme.darkerText,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Doi Inthanon National Park.',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 14,
-                                  letterSpacing: 0.27,
-                                  color: AppTheme.grey,
+                                Text(
+                                  'Doi Inthanon National Park.',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                    fontSize: 14,
+                                    letterSpacing: 0.27,
+                                    color: AppTheme.grey,
+                                  ),
                                 ),
-                              ),
-                            ]
-                          ),
+                              ]),
                         ),
                         //TODO: Insert Destination Region or City
-                       
-                         Padding(
+
+                        Padding(
                           padding: const EdgeInsets.only(
-                            //padding of Text above and Price
-                              left: 16, right: 16, bottom: 8, top: 8),
+                              //padding of Text above and Price
+                              left: 16,
+                              right: 16,
+                              bottom: 8,
+                              top: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              const Row(
-                                children: [
-                                    Text(
-                                    //TODO AWS GET DATA DB
-                                    '\$8.50',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 22,
-                                      letterSpacing: 0.27,
-                                      color: AppTheme.primaryColor,
-                                    ),
+                              const Row(children: [
+                                Text(
+                                  //TODO AWS GET DATA DB
+                                  '\$8.50',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22,
+                                    letterSpacing: 0.27,
+                                    color: AppTheme.primaryColor,
                                   ),
-                                    Text(
-                                      '/night',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w200,
-                                        fontSize: 14,
-                                        letterSpacing: 0.27,
-                                        color: AppTheme.primaryColor
-                                      ),
-                                    )
-                                ]
-                              ),
+                                ),
+                                Text(
+                                  '/night',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 14,
+                                      letterSpacing: 0.27,
+                                      color: AppTheme.primaryColor),
+                                )
+                              ]),
                               Row(
                                 children: <Widget>[
-                                  Column(
-                                    children: [
-                                      Card(
-                                        color:AppTheme.nearlyWhite,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                                        //this is for shadow:
-                                        elevation: 1.0,
-                                        child:
-                                        SizedBox(
-                                          width: 40,
-                                          height: 40,
-                                          child: Material(
-                                            color: Colors.transparent,
-                                            child: InkWell(
-                                              borderRadius:
-                                                  BorderRadius.circular(60),
-                                              //TODO: navigate to Uploader profile
-                                              //onTap: () => Navigator.pop(context),
-                                              child:  Center(
-                                                //TODO AWS DB Load 120x120px
-                                                  child:  Image.asset("assets/hotel/profile_example_transparent-01.png"),
-                                              ),
+                                  Column(children: [
+                                    Card(
+                                      color: AppTheme.nearlyWhite,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      //this is for shadow:
+                                      elevation: 1.0,
+                                      child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(60),
+                                            //TODO: navigate to Uploader profile
+                                            //onTap: () => Navigator.pop(context),
+                                            child: Center(
+                                              //TODO AWS DB Load 120x120px
+                                              child: Image.asset(
+                                                  "assets/hotel/profile_example_transparent-01.png"),
                                             ),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
-                                      const Text(
-                                        //TODO AWS GET Uploader Profile Name => DATA DB
-                                        'Paul',
-                                        //textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          letterSpacing: 0.27,
-                                          color: AppTheme.grey,
-                                        ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      //TODO AWS GET Uploader Profile Name => DATA DB
+                                      'Paul',
+                                      //textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        letterSpacing: 0.27,
+                                        color: AppTheme.grey,
                                       ),
-                                            
-                                      
-                                    ]
-                                    
+                                    ),
+                                  ]),
+                                  const SizedBox(
+                                    width: 8,
                                   ),
-                                  const SizedBox(width: 8,),
                                   const Text(
                                     //TODO AWS GET DATA DB
                                     '4.3',
@@ -268,7 +265,7 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 500),
                             opacity: opacity2,
-                            child:  Padding(
+                            child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 16, right: 16, top: 8, bottom: 8),
                               child: LayoutBuilder(
@@ -296,14 +293,16 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                                   )..layout(maxWidth: constraints.maxWidth);
 
                                   // Check if the text overflows and update state accordingly
-                                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
                                     setState(() {
                                       _isOverflowing = tp.didExceedMaxLines;
                                     });
                                   });
 
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       const Text(
                                         textContent,
@@ -317,38 +316,46 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-
                                       if (_isOverflowing)
                                         const SizedBox(height: 5.5),
-
-                                        GestureDetector(
-                                          onTapDown: (_) {
-                                            setState(() {
-                                              _isTapped = true; // Set tapped state to true on tap down
-                                            });
-                                          },
-                                          onTapUp: (_) {
-                                            setState(() {
-                                              _isTapped = false; // Reset tapped state on tap release
-                                            });
-                                            _showFullTextOverlay(context, textContent);
-                                          },
-                                          onTapCancel: () {
-                                            setState(() {
-                                              _isTapped = false; // Reset tapped state if tap is canceled
-                                            });
-                                          },
-                                          child: Text(
-                                            "Show More",
-                                            style: TextStyle(
-                                              color: AppTheme.grey.withOpacity(_isTapped ? 0.3 : 1.0), // Adjust opacity based on tap
-                                              fontWeight: FontWeight.w600,
-                                              decoration: TextDecoration.underline,
-                                              decorationColor: AppTheme.grey.withOpacity(_isTapped ? 0.3 : 1.0),
-                                              fontSize: 15.5,
-                                            ),
+                                      GestureDetector(
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _isTapped =
+                                                true; // Set tapped state to true on tap down
+                                          });
+                                        },
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _isTapped =
+                                                false; // Reset tapped state on tap release
+                                          });
+                                          _showFullTextOverlay(
+                                              context, textContent);
+                                        },
+                                        onTapCancel: () {
+                                          setState(() {
+                                            _isTapped =
+                                                false; // Reset tapped state if tap is canceled
+                                          });
+                                        },
+                                        child: Text(
+                                          "Show More",
+                                          style: TextStyle(
+                                            color: AppTheme.grey.withOpacity(
+                                                _isTapped
+                                                    ? 0.3
+                                                    : 1.0), // Adjust opacity based on tap
+                                            fontWeight: FontWeight.w600,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: AppTheme.grey
+                                                .withOpacity(
+                                                    _isTapped ? 0.3 : 1.0),
+                                            fontSize: 15.5,
                                           ),
                                         ),
+                                      ),
                                     ],
                                   );
                                 }, // End of LayoutBuilder's builder
@@ -401,8 +408,7 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                                       ),
                                       boxShadow: <BoxShadow>[
                                         BoxShadow(
-                                            color: AppTheme
-                                                .primaryColor
+                                            color: AppTheme.primaryColor
                                                 .withOpacity(0.5),
                                             offset: const Offset(1.1, 1.1),
                                             blurRadius: 10.0),
@@ -425,8 +431,7 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                                             fontWeight: FontWeight.w600,
                                             fontSize: 18,
                                             letterSpacing: 0.0,
-                                            color: AppTheme
-                                                .nearlyWhite,
+                                            color: AppTheme.nearlyWhite,
                                           ),
                                         ),
                                       ),
@@ -482,14 +487,15 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left:5),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top, left: 5),
             child: Card(
-              color:AppTheme.nearlyWhite,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+              color: AppTheme.nearlyWhite,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50)),
               //this is for shadow:
               elevation: 2.0,
-              child:
-              SizedBox(
+              child: SizedBox(
                 width: AppBar().preferredSize.height,
                 height: AppBar().preferredSize.height,
                 child: Material(
@@ -500,7 +506,7 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                     onTap: () => Navigator.pop(context),
                     child: const Center(
                       child: Padding(
-                         padding: EdgeInsets.only(left: 8.0),
+                        padding: EdgeInsets.only(left: 8.0),
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: AppTheme.nearlyBlack,
@@ -520,37 +526,40 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
 
   // Function to show the full text overlay with a close button (X)
   void _showFullTextOverlay(BuildContext context, String textContent) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      fullscreenDialog: true,
-      builder: (BuildContext context) {
-        return Material(
-          color: AppTheme.nearlyWhite,
-          child: Stack(
-            children: <Widget>[
-              // Back Arrow Icon positioned on the left
-              Positioned(
-                top: MediaQuery.of(context).padding.top,
-                left: 5,
-                child: Card(
-                  color: AppTheme.nearlyWhite,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                  elevation: 2.0,
-                  child: SizedBox(
-                    width: AppBar().preferredSize.height,
-                    height: AppBar().preferredSize.height,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
-                        onTap: () => Navigator.pop(context),
-                        child: const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              color: AppTheme.nearlyBlack,
-                              size: 17,
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (BuildContext context) {
+          return Material(
+            color: AppTheme.nearlyWhite,
+            child: Stack(
+              children: <Widget>[
+                // Back Arrow Icon positioned on the left
+                Positioned(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 5,
+                  child: Card(
+                    color: AppTheme.nearlyWhite,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    elevation: 2.0,
+                    child: SizedBox(
+                      width: AppBar().preferredSize.height,
+                      height: AppBar().preferredSize.height,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(
+                              AppBar().preferredSize.height),
+                          onTap: () => Navigator.pop(context),
+                          child: const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: AppTheme.nearlyBlack,
+                                size: 17,
+                              ),
                             ),
                           ),
                         ),
@@ -558,55 +567,55 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
                     ),
                   ),
                 ),
-              ),
-              
-              // Centered Subtitle Text
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 20,
-                left: 0,
-                right: 0,
-                child: const Center(
-                  child: Text(
-                    'About this travel:',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      letterSpacing: 0.27,
-                      color: AppTheme.darkerText,
+
+                // Centered Subtitle Text
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + 20,
+                  left: 0,
+                  right: 0,
+                  child: const Center(
+                    child: Text(
+                      'About this travel:',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22,
+                        letterSpacing: 0.27,
+                        color: AppTheme.darkerText,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // Full text content below the top area
-              Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + AppBar().preferredSize.height + 32.0,
-                  left: 28.0,
-                  right: 28.0,
-                ),
-                child: SingleChildScrollView(
-                  child: Text(
-                    textContent,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w200,
-                      fontSize: 14,
-                      letterSpacing: 0.27,
-                      color: AppTheme.grey,
+                // Full text content below the top area
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top +
+                        AppBar().preferredSize.height +
+                        32.0,
+                    left: 28.0,
+                    right: 28.0,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Text(
+                      textContent,
+                      textAlign: TextAlign.justify,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w200,
+                        fontSize: 14,
+                        letterSpacing: 0.27,
+                        color: AppTheme.grey,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    ),
-  );
-}
-
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 
   Widget getTimeBoxUI(String text1, String txt2) {
     return Padding(
@@ -654,5 +663,4 @@ class _TravelScreen extends State<TravelComplementScreen> with TickerProviderSta
       ),
     );
   }
-
 }

@@ -1,19 +1,21 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travelcompanionfinder/bottom_bar.dart';
-
 import 'app_theme.dart';
-import 'navigation_home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]).then((_) => runApp(const MyApp()));
+
+  // Only set preferred orientations if not running on web
+  if (!kIsWeb) {
+    await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
+  }
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,17 +23,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          Platform.isAndroid && !kIsWeb ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarDividerColor: Colors.grey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+    // Only set system UI overlay style if not running on web
+    if (!kIsWeb) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarDividerColor: Colors.grey,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ));
+    }
+
     return MaterialApp(
-      title: 'Flutter UI',
+      title: 'Travel Companion Finder',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -41,12 +46,12 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.transparent,
       ),
       home: const Scaffold(
-          body: SafeArea(
-        top: false,
-        bottom: false,
-        //child: NavigationHomeScreen(),
-        child: BottomBar(),
-      )),
+        body: SafeArea(
+          top: false,
+          bottom: false,
+          child: BottomBar(),
+        ),
+      ),
     );
   }
 }

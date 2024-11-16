@@ -43,7 +43,7 @@ class HotelAppTheme {
       primaryTextTheme: _buildTextTheme(base.primaryTextTheme),
       platform: TargetPlatform.iOS,
       colorScheme: colorScheme
-          .copyWith(background: const Color(0xFFFFFFFF))
+          .copyWith(surface: const Color(0xFFFFFFFF))
           .copyWith(error: const Color(0xFFB00020)),
     );
   }

@@ -1,33 +1,37 @@
 name: travelcompanionfinder
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  font_awesome_flutter: ^10.0.0
-  intl: ^0.19.0
-  url_launcher: ^6.0.0
-  vector_math: ^2.0.0
+  flutter_web_plugins:
+    sdk: flutter
+  font_awesome_flutter: ^10.8.0
+  intl: ^0.20.0
+  url_launcher: ^6.3.1
+  vector_math: ^2.1.4
 
 dev_dependencies:
   change_app_package_name: ^1.4.0
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+  build_runner: ^2.4.0
+  build_web_compilers: ^4.0.4
 
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: 'icon/ios.png'
-  image_path_android: 'icon/android.png'
-  adaptive_icon_background: '#ffffff'
-  adaptive_icon_foreground: 'icon/adaptive.png'
+  image_path_ios: "icon/ios.png"
+  image_path_android: "icon/android.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "icon/adaptive.png"
 
 flutter:
   uses-material-design: true
