@@ -1,18 +1,20 @@
 FROM node:18-alpine
 
+# Install netcat
+RUN apk add --no-cache netcat-openbsd
+
 WORKDIR /usr/src/app
 
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci
 
-# Copy source code
 COPY . .
 
-# Expose port
+# Make wait-for script executable
+COPY wait-for.sh /wait-for.sh
+RUN chmod +x /wait-for.sh
+
 EXPOSE 3000
 
-# Start the server
-CMD ["npm", "start"]
+# Use wait-for script to wait for MongoDB before starting
+CMD ["/wait-for.sh", "mongodb:27017", "--", "npm", "start"]
