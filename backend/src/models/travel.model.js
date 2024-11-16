@@ -6,11 +6,6 @@ const travelSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  creator: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   description: {
     type: String,
     required: true
@@ -36,6 +31,11 @@ const travelSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   preferences: {
     activityLevel: {
       type: String,
@@ -62,9 +62,5 @@ const travelSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-// Create indexes for better search performance
-travelSchema.index({ destination: 1, startDate: 1 });
-travelSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Travel', travelSchema);

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../models/travel.dart';
 import '../../models/travel_preferences.dart';
 import '../../providers/travel_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class CreateTravelScreen extends StatefulWidget {
   static const routeName = '/create-travel';
@@ -39,137 +40,6 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
     'Food',
     'Nature'
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.initialTravel != null) {
-      // Populate form for editing
-      final travel = widget.initialTravel!;
-      _titleController.text = travel.title;
-      _descriptionController.text = travel.description;
-      _destinationController.text = travel.destination;
-      _startDate = travel.startDate;
-      _endDate = travel.endDate;
-      _activityLevel = travel.preferences.activityLevel;
-      _budget = travel.preferences.budget;
-      _travelStyle.addAll(travel.preferences.travelStyle);
-      _maxCompanions = travel.maxCompanions;
-    }
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _destinationController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: isStartDate
-          ? _startDate ?? DateTime.now()
-          : _endDate ?? _startDate ?? DateTime.now(),
-      firstDate: isStartDate ? DateTime.now() : _startDate ?? DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
-    );
-
-    if (picked != null) {
-      setState(() {
-        if (isStartDate) {
-          _startDate = picked;
-          // Reset end date if it's before new start date
-          if (_endDate != null && _endDate!.isBefore(_startDate!)) {
-            _endDate = null;
-          }
-        } else {
-          _endDate = picked;
-        }
-      });
-    }
-  }
-
-  Future<void> _submitForm() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    if (_startDate == null || _endDate == null) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select both start and end dates')),
-      );
-      return;
-    }
-
-    if (_travelStyle.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please select at least one travel style')),
-      );
-      return;
-    }
-
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    final preferences = TravelPreferences(
-      activityLevel: _activityLevel,
-      budget: _budget,
-      travelStyle: _travelStyle.toList(),
-    );
-
-    final travel = Travel(
-      id: widget.initialTravel?.id ?? '', // Empty for new, existing for edit
-      title: _titleController.text,
-      description: _descriptionController.text,
-      destination: _destinationController.text,
-      startDate: _startDate!,
-      endDate: _endDate!,
-      maxCompanions: _maxCompanions,
-      currentCompanions: widget.initialTravel?.currentCompanions ?? [],
-      preferences: preferences,
-      status: 'Open',
-      creatorId:
-          widget.initialTravel?.creatorId ?? '', // Will be set by backend
-      createdAt: widget.initialTravel?.createdAt ?? DateTime.now(),
-    );
-
-    try {
-      final provider = Provider.of<TravelProvider>(context, listen: false);
-      if (widget.initialTravel != null) {
-        await provider.updateTravel(travel);
-      } else {
-        await provider.createTravel(travel);
-      }
-      if (!mounted) return;
-      Navigator.of(context).pop();
-    } catch (error) {
-      if (!mounted) return;
-      await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('An error occurred!'),
-          content: Text(error.toString()),
-          actions: [
-            TextButton(
-              child: const Text('Okay'),
-              onPressed: () => Navigator.of(ctx).pop(),
-            )
-          ],
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isSubmitting = false;
-        });
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -299,10 +169,7 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Travel Style',
-                style: TextStyle(fontSize: 16),
-              ),
+              const Text('Travel Style', style: TextStyle(fontSize: 16)),
               Wrap(
                 spacing: 8,
                 children: _travelStyleOptions.map((style) {
@@ -361,5 +228,146 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialTravel != null) {
+      // Populate form for editing
+      final travel = widget.initialTravel!;
+      _titleController.text = travel.title;
+      _descriptionController.text = travel.description;
+      _destinationController.text = travel.destination;
+      _startDate = travel.startDate;
+      _endDate = travel.endDate;
+      _activityLevel = travel.preferences.activityLevel;
+      _budget = travel.preferences.budget;
+      _travelStyle.addAll(travel.preferences.travelStyle);
+      _maxCompanions = travel.maxCompanions;
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _destinationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context, bool isStartDate) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: isStartDate
+          ? _startDate ?? DateTime.now()
+          : _endDate ?? _startDate ?? DateTime.now(),
+      firstDate: isStartDate ? DateTime.now() : _startDate ?? DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
+    );
+
+    if (picked != null) {
+      setState(() {
+        if (isStartDate) {
+          _startDate = picked;
+          // Reset end date if it's before new start date
+          if (_endDate != null && _endDate!.isBefore(_startDate!)) {
+            _endDate = null;
+          }
+        } else {
+          _endDate = picked;
+        }
+      });
+    }
+  }
+
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (_startDate == null || _endDate == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select both start and end dates')),
+      );
+      return;
+    }
+
+    if (_travelStyle.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please select at least one travel style')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    final preferences = TravelPreferences(
+      activityLevel: _activityLevel,
+      budget: _budget,
+      travelStyle: _travelStyle.toList(),
+    );
+
+    // Get the current user ID from AuthProvider
+    final userId = context.read<AuthProvider>().user?['id'];
+
+    if (userId == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please log in again')),
+      );
+      return;
+    }
+
+    final travel = Travel(
+      id: widget.initialTravel?.id ?? '',
+      title: _titleController.text,
+      description: _descriptionController.text,
+      destination: _destinationController.text,
+      startDate: _startDate!,
+      endDate: _endDate!,
+      maxCompanions: _maxCompanions,
+      currentCompanions: widget.initialTravel?.currentCompanions ?? [],
+      preferences: preferences,
+      status: 'Open',
+      creatorId: userId, // Use the userId from the AuthProvider
+      createdAt: widget.initialTravel?.createdAt ?? DateTime.now(),
+    );
+
+    try {
+      final provider = Provider.of<TravelProvider>(context, listen: false);
+      if (widget.initialTravel != null) {
+        await provider.updateTravel(travel);
+      } else {
+        await provider.createTravel(travel);
+      }
+      if (!mounted) return;
+      Navigator.of(context).pop(true);
+    } catch (error) {
+      if (!mounted) return;
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('An error occurred!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () => Navigator.of(ctx).pop(),
+            )
+          ],
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   }
 }

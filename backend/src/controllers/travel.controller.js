@@ -5,7 +5,7 @@ exports.createTravel = async (req, res) => {
   try {
     const travelData = {
       ...req.body,
-      userId: req.user.id, // From auth middleware
+      creator: req.user.id,
     };
 
     const travel = new Travel(travelData);
@@ -50,7 +50,7 @@ exports.getTravels = async (req, res) => {
     }
 
     const travels = await Travel.find(query)
-      .populate('userId', 'name')
+      .populate('creator', 'name')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
@@ -63,9 +63,10 @@ exports.getTravels = async (req, res) => {
       currentPage: page
     });
   } catch (error) {
-    logger.error('Error fetching travels:', error);
+    logger.error('Error fetching travels:', error.message);
     res.status(500).json({
-      message: 'Error fetching travel listings'
+      message: 'Error fetching travel listings',
+      error: error.message
     });
   }
 };

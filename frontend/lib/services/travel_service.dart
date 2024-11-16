@@ -1,4 +1,3 @@
-// lib/services/travel_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/travel.dart';
@@ -28,7 +27,7 @@ class TravelService {
   }) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/travels/search').replace(
+        Uri.parse('$baseUrl/travels').replace(
           queryParameters: {
             if (destination != null) 'destination': destination,
             if (startDate != null) 'startDate': startDate.toIso8601String(),
@@ -52,23 +51,6 @@ class TravelService {
     }
   }
 
-  Future<Travel> getTravel(String id) async {
-    try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/travels/$id'),
-        headers: _headers,
-      );
-
-      if (response.statusCode == 200) {
-        return Travel.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load travel');
-      }
-    } catch (e) {
-      throw Exception('Error getting travel: $e');
-    }
-  }
-
   Future<Travel> createTravel(Travel travel) async {
     try {
       final response = await http.post(
@@ -80,7 +62,8 @@ class TravelService {
       if (response.statusCode == 201) {
         return Travel.fromJson(json.decode(response.body));
       } else {
-        throw Exception('Failed to create travel');
+        final error = json.decode(response.body);
+        throw Exception(error['message'] ?? 'Failed to create travel');
       }
     } catch (e) {
       throw Exception('Error creating travel: $e');

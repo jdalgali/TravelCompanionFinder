@@ -1,4 +1,4 @@
-import 'travel_preferences.dart';
+import '../models/travel_preferences.dart';
 
 class Travel {
   final String id;
@@ -31,7 +31,7 @@ class Travel {
 
   factory Travel.fromJson(Map<String, dynamic> json) {
     return Travel(
-      id: json['_id'],
+      id: json['_id'] ?? '',
       title: json['title'],
       description: json['description'],
       destination: json['destination'],
