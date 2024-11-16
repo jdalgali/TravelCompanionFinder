@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
+import 'providers/travel_provider.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/travels/create_travel_screen.dart';
 import 'widgets/bottom_bar.dart';
 import 'app_theme.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!kIsWeb) {
@@ -18,8 +20,17 @@ Future<void> main() async {
   }
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, TravelProvider>(
+          create: (context) => TravelProvider(token: null),
+          update: (context, auth, previousTravels) =>
+              TravelProvider(token: auth.token)..updateToken(auth.token),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -31,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!kIsWeb) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
@@ -56,6 +67,18 @@ class MyApp extends StatelessWidget {
           return auth.isAuthenticated ? const BottomBar() : const LoginScreen();
         },
       ),
+      onGenerateRoute: (settings) {
+        // Handle dynamic routes
+        if (settings.name == CreateTravelScreen.routeName) {
+          final args = settings.arguments as Map<String, dynamic>?;
+          return MaterialPageRoute(
+            builder: (context) => CreateTravelScreen(
+              initialTravel: args?['travel'],
+            ),
+          );
+        }
+        return null;
+      },
     );
   }
 }

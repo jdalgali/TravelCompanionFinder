@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import '../utils/logger.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://localhost:3000/api/v1/auth';
+  static const String baseUrl =
+      'http://localhost:3000/api/v1/auth'; // Use 'backend' as the hostname
 
   Future<Map<String, dynamic>> register({
     required String email,

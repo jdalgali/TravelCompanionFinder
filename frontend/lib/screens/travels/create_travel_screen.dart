@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/travel.dart';
+import '../../models/travel_preferences.dart';
 import '../../providers/travel_provider.dart';
 
 class CreateTravelScreen extends StatefulWidget {
-  const CreateTravelScreen({super.key});
+  static const routeName = '/create-travel';
+  final Travel? initialTravel; // For editing mode
+
+  const CreateTravelScreen({
+    this.initialTravel,
+    super.key,
+  });
 
   @override
   State<CreateTravelScreen> createState() => _CreateTravelScreenState();
@@ -14,34 +22,68 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _destinationController = TextEditingController();
-  final _maxCompanionsController = TextEditingController();
-  final _estimatedCostController = TextEditingController();
-  final List<String> _selectedPreferences = [];
-  final List<String> _activities = [];
-
   DateTime? _startDate;
   DateTime? _endDate;
+  String _activityLevel = 'Medium';
+  String _budget = 'Moderate';
+  final Set<String> _travelStyle = {'Adventure'};
+  int _maxCompanions = 2;
+  bool _isSubmitting = false;
 
-  static const List<String> _availablePreferences = [
+  final List<String> _activityLevels = ['Low', 'Medium', 'High'];
+  final List<String> _budgetOptions = ['Budget', 'Moderate', 'Luxury'];
+  final List<String> _travelStyleOptions = [
     'Adventure',
-    'Relaxation',
     'Cultural',
-    'Budget',
-    'Luxury'
+    'Relaxation',
+    'Food',
+    'Nature'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialTravel != null) {
+      // Populate form for editing
+      final travel = widget.initialTravel!;
+      _titleController.text = travel.title;
+      _descriptionController.text = travel.description;
+      _destinationController.text = travel.destination;
+      _startDate = travel.startDate;
+      _endDate = travel.endDate;
+      _activityLevel = travel.preferences.activityLevel;
+      _budget = travel.preferences.budget;
+      _travelStyle.addAll(travel.preferences.travelStyle);
+      _maxCompanions = travel.maxCompanions;
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _destinationController.dispose();
+    super.dispose();
+  }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+      initialDate: isStartDate
+          ? _startDate ?? DateTime.now()
+          : _endDate ?? _startDate ?? DateTime.now(),
+      firstDate: isStartDate ? DateTime.now() : _startDate ?? DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
     );
 
     if (picked != null) {
       setState(() {
         if (isStartDate) {
           _startDate = picked;
+          // Reset end date if it's before new start date
+          if (_endDate != null && _endDate!.isBefore(_startDate!)) {
+            _endDate = null;
+          }
         } else {
           _endDate = picked;
         }
@@ -49,36 +91,83 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
     }
   }
 
-  Future<void> _createTravel() async {
-    if (!_formKey.currentState!.validate()) return;
+  Future<void> _submitForm() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     if (_startDate == null || _endDate == null) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select dates')),
+        const SnackBar(content: Text('Please select both start and end dates')),
       );
       return;
     }
 
-    final travelData = {
-      'title': _titleController.text,
-      'description': _descriptionController.text,
-      'destination': _destinationController.text,
-      'startDate': _startDate!.toIso8601String(),
-      'endDate': _endDate!.toIso8601String(),
-      'maxCompanions': int.parse(_maxCompanionsController.text),
-      'estimatedCost': double.parse(_estimatedCostController.text),
-      'preferences': _selectedPreferences,
-      'activities': _activities,
-    };
+    if (_travelStyle.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please select at least one travel style')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    final preferences = TravelPreferences(
+      activityLevel: _activityLevel,
+      budget: _budget,
+      travelStyle: _travelStyle.toList(),
+    );
+
+    final travel = Travel(
+      id: widget.initialTravel?.id ?? '', // Empty for new, existing for edit
+      title: _titleController.text,
+      description: _descriptionController.text,
+      destination: _destinationController.text,
+      startDate: _startDate!,
+      endDate: _endDate!,
+      maxCompanions: _maxCompanions,
+      currentCompanions: widget.initialTravel?.currentCompanions ?? [],
+      preferences: preferences,
+      status: 'Open',
+      creatorId:
+          widget.initialTravel?.creatorId ?? '', // Will be set by backend
+      createdAt: widget.initialTravel?.createdAt ?? DateTime.now(),
+    );
 
     try {
-      await context.read<TravelProvider>().createTravel(travelData);
+      final provider = Provider.of<TravelProvider>(context, listen: false);
+      if (widget.initialTravel != null) {
+        await provider.updateTravel(travel);
+      } else {
+        await provider.createTravel(travel);
+      }
       if (!mounted) return;
-      Navigator.pop(context);
-    } catch (e) {
+      Navigator.of(context).pop();
+    } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('An error occurred!'),
+          content: Text(error.toString()),
+          actions: [
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () => Navigator.of(ctx).pop(),
+            )
+          ],
+        ),
       );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
     }
   }
 
@@ -86,12 +175,13 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Travel Listing'),
+        title: Text(
+            widget.initialTravel != null ? 'Edit Travel' : 'Create New Travel'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -104,6 +194,9 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a title';
+                  }
+                  if (value.length < 5) {
+                    return 'Title should be at least 5 characters';
                   }
                   return null;
                 },
@@ -119,6 +212,9 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a description';
+                  }
+                  if (value.length < 20) {
+                    return 'Description should be at least 20 characters';
                   }
                   return null;
                 },
@@ -141,111 +237,129 @@ class _CreateTravelScreenState extends State<CreateTravelScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: TextButton.icon(
-                      onPressed: () => _selectDate(context, true),
-                      icon: const Icon(Icons.calendar_today),
-                      label: Text(
+                    child: ListTile(
+                      title: const Text('Start Date'),
+                      subtitle: Text(
                         _startDate == null
-                            ? 'Start Date'
-                            : _startDate.toString().split(' ')[0],
+                            ? 'Not set'
+                            : _startDate!.toString().substring(0, 10),
                       ),
+                      onTap: () => _selectDate(context, true),
                     ),
                   ),
-                  const SizedBox(width: 16),
                   Expanded(
-                    child: TextButton.icon(
-                      onPressed: () => _selectDate(context, false),
-                      icon: const Icon(Icons.calendar_today),
-                      label: Text(
+                    child: ListTile(
+                      title: const Text('End Date'),
+                      subtitle: Text(
                         _endDate == null
-                            ? 'End Date'
-                            : _endDate.toString().split(' ')[0],
+                            ? 'Not set'
+                            : _endDate!.toString().substring(0, 10),
                       ),
+                      onTap: () => _selectDate(context, false),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _maxCompanionsController,
+              DropdownButtonFormField<String>(
+                value: _activityLevel,
                 decoration: const InputDecoration(
-                  labelText: 'Max Companions',
+                  labelText: 'Activity Level',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter max companions';
+                items: _activityLevels
+                    .map((level) => DropdownMenuItem(
+                          value: level,
+                          child: Text(level),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _activityLevel = value);
                   }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
                 },
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _estimatedCostController,
+              DropdownButtonFormField<String>(
+                value: _budget,
                 decoration: const InputDecoration(
-                  labelText: 'Estimated Cost',
+                  labelText: 'Budget',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter estimated cost';
+                items: _budgetOptions
+                    .map((budget) => DropdownMenuItem(
+                          value: budget,
+                          child: Text(budget),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _budget = value);
                   }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid number';
-                  }
-                  return null;
                 },
               ),
               const SizedBox(height: 16),
-              const Text('Preferences'),
+              const Text(
+                'Travel Style',
+                style: TextStyle(fontSize: 16),
+              ),
               Wrap(
                 spacing: 8,
-                children: _availablePreferences.map((preference) {
+                children: _travelStyleOptions.map((style) {
                   return FilterChip(
-                    label: Text(preference),
-                    selected: _selectedPreferences.contains(preference),
+                    label: Text(style),
+                    selected: _travelStyle.contains(style),
                     onSelected: (selected) {
                       setState(() {
                         if (selected) {
-                          _selectedPreferences.add(preference);
+                          _travelStyle.add(style);
                         } else {
-                          _selectedPreferences.remove(preference);
+                          _travelStyle.remove(style);
                         }
                       });
                     },
                   );
                 }).toList(),
               ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Text('Maximum Companions: '),
+                  Expanded(
+                    child: Slider(
+                      value: _maxCompanions.toDouble(),
+                      min: 1,
+                      max: 10,
+                      divisions: 9,
+                      label: _maxCompanions.toString(),
+                      onChanged: (value) {
+                        setState(() {
+                          _maxCompanions = value.toInt();
+                        });
+                      },
+                    ),
+                  ),
+                  Text(_maxCompanions.toString()),
+                ],
+              ),
               const SizedBox(height: 24),
-              Consumer<TravelProvider>(
-                builder: (context, provider, child) {
-                  return ElevatedButton(
-                    onPressed: provider.isLoading ? null : _createTravel,
-                    child: provider.isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text('Create Travel Listing'),
-                  );
-                },
+              ElevatedButton(
+                onPressed: _isSubmitting ? null : _submitForm,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: _isSubmitting
+                      ? const CircularProgressIndicator()
+                      : Text(
+                          widget.initialTravel != null
+                              ? 'Update Travel'
+                              : 'Create Travel',
+                        ),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _destinationController.dispose();
-    _maxCompanionsController.dispose();
-    _estimatedCostController.dispose();
-    super.dispose();
   }
 }

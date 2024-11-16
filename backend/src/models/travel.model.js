@@ -6,13 +6,13 @@ const travelSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  description: {
-    type: String,
-    required: true
-  },
-  userId: {
+  creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true
+  },
+  description: {
+    type: String,
     required: true
   },
   destination: {
@@ -32,58 +32,39 @@ const travelSchema = new mongoose.Schema({
     required: true,
     min: 1
   },
-  preferences: [{
-    type: String,
-    enum: ['Adventure', 'Relaxation', 'Cultural', 'Budget', 'Luxury']
-  }],
-  estimatedCost: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  activities: [{
-    type: String
-  }],
-  status: {
-    type: String,
-    enum: ['open', 'closed', 'in-progress'],
-    default: 'open'
-  },
-  applicants: [{
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'accepted', 'rejected'],
-      default: 'pending'
-    },
-    appliedAt: {
-      type: Date,
-      default: Date.now
-    }
-  }],
-  acceptedCompanions: [{
+  currentCompanions: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }]
-}, {
-  timestamps: true
+  }],
+  preferences: {
+    activityLevel: {
+      type: String,
+      enum: ['Low', 'Medium', 'High'],
+      required: true
+    },
+    budget: {
+      type: String,
+      enum: ['Budget', 'Moderate', 'Luxury'],
+      required: true
+    },
+    travelStyle: [{
+      type: String,
+      enum: ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature']
+    }]
+  },
+  status: {
+    type: String,
+    enum: ['Open', 'Full', 'Completed', 'Cancelled'],
+    default: 'Open'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-// Add index for search functionality
-travelSchema.index({ destination: 'text', title: 'text' });
-
-// Middleware to validate dates
-travelSchema.pre('save', function(next) {
-  if (this.startDate >= this.endDate) {
-    next(new Error('End date must be after start date'));
-  }
-  if (this.startDate < new Date()) {
-    next(new Error('Start date cannot be in the past'));
-  }
-  next();
-});
+// Create indexes for better search performance
+travelSchema.index({ destination: 1, startDate: 1 });
+travelSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Travel', travelSchema);

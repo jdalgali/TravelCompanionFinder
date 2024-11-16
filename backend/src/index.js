@@ -9,7 +9,12 @@ const travelRoutes = require('./routes/travel.routes');
 const app = express();
 
 // Simple CORS setup
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // Basic middleware
 app.use(express.json());
@@ -29,7 +34,10 @@ app.use((err, req, res, next) => {
 
 // Database connection
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     logger.info('Connected to MongoDB');
     const PORT = process.env.PORT || 3000;

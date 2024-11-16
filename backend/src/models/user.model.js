@@ -18,33 +18,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  preferences: {
-    travelStyle: {
-      type: String,
-      enum: ['adventure', 'relaxation', 'cultural', 'budget', 'luxury'],
-      default: 'adventure'
-    },
-    destinations: {
-      type: [String],
-      default: []
-    },
-    languages: {
-      type: [String],
-      default: []
-    },
-    ageRange: {
-      min: {
-        type: Number,
-        default: 18
-      },
-      max: {
-        type: Number,
-        default: 100
-      }
-    }
-  },
-  bio: String,
-  profileImage: String,
   createdAt: {
     type: Date,
     default: Date.now

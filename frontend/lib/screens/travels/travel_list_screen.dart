@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/travel_provider.dart';
-import '../../models/travel.dart';
-import '../../app_theme.dart';
+import '../../widgets/travel_search_bar.dart';
+import '../../widgets/travel_list_item.dart';
+import '../../widgets/animated_list_item.dart';
 import 'create_travel_screen.dart';
+import 'travel_detail_screen.dart';
 
 class TravelListScreen extends StatefulWidget {
+  static const routeName = '/travel-list';
+
   const TravelListScreen({super.key});
 
   @override
@@ -13,38 +17,92 @@ class TravelListScreen extends StatefulWidget {
 }
 
 class _TravelListScreenState extends State<TravelListScreen> {
+  String _searchQuery = '';
+  DateTime? _startDate;
+  DateTime? _endDate;
+
   @override
   void initState() {
     super.initState();
-    _loadTravels();
-  }
-
-  Future<void> _loadTravels() async {
-    if (!mounted) return;
-    await context.read<TravelProvider>().loadTravels();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<TravelProvider>(context, listen: false).fetchTravels();
+      }
+    });
   }
 
   void _showFilterDialog() {
-    // Implement filter dialog
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (ctx) => AlertDialog(
         title: const Text('Filter Travels'),
-        content: const Text('Filter options coming soon'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('Start Date'),
+              subtitle:
+                  Text(_startDate?.toString().substring(0, 10) ?? 'Not set'),
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (picked != null && mounted) {
+                  setState(() => _startDate = picked);
+                }
+              },
+            ),
+            ListTile(
+              title: const Text('End Date'),
+              subtitle:
+                  Text(_endDate?.toString().substring(0, 10) ?? 'Not set'),
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: _startDate ?? DateTime.now(),
+                  firstDate: _startDate ?? DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (picked != null && mounted) {
+                  setState(() => _endDate = picked);
+                }
+              },
+            ),
+          ],
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            onPressed: () {
+              setState(() {
+                _startDate = null;
+                _endDate = null;
+              });
+              Navigator.of(ctx).pop();
+              _applyFilters();
+            },
+            child: const Text('Clear'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              _applyFilters();
+            },
+            child: const Text('Apply'),
           ),
         ],
       ),
     );
   }
 
-  void _navigateToTravelDetails(Travel travel) {
-    // Implement navigation to details
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Travel details coming soon')),
+  void _applyFilters() {
+    if (!mounted) return;
+    Provider.of<TravelProvider>(context, listen: false).searchTravels(
+      destination: _searchQuery.isEmpty ? null : _searchQuery,
+      startDate: _startDate,
+      endDate: _endDate,
     );
   }
 
@@ -53,131 +111,83 @@ class _TravelListScreenState extends State<TravelListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Travel Listings'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: _showFilterDialog,
+      ),
+      body: Column(
+        children: [
+          TravelSearchBar(
+            onSearch: (query) {
+              setState(() => _searchQuery = query);
+              _applyFilters();
+            },
+            onFilterTap: _showFilterDialog,
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await Provider.of<TravelProvider>(context, listen: false)
+                    .fetchTravels();
+              },
+              child: Consumer<TravelProvider>(
+                builder: (ctx, travelData, child) {
+                  if (travelData.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (travelData.error != null) {
+                    return Center(child: Text(travelData.error!));
+                  }
+                  if (travelData.travels.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('No travels found'),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(CreateTravelScreen.routeName),
+                            child: const Text('Create Your First Travel'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: travelData.travels.length,
+                    itemBuilder: (ctx, i) => AnimatedListItem(
+                      index: i,
+                      child: TravelListItem(
+                        travel: travelData.travels[i],
+                        key: ValueKey(travelData.travels[i].id),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TravelDetailScreen(
+                                travel: travelData.travels[i],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
-      body: Consumer<TravelProvider>(
-        builder: (context, travelProvider, child) {
-          if (travelProvider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          final result = await Navigator.of(context)
+              .pushNamed(CreateTravelScreen.routeName);
+          if (mounted && result != null) {
+            // Refresh the list after creating a new travel
+            Provider.of<TravelProvider>(context, listen: false).fetchTravels();
           }
-
-          if (travelProvider.error != null) {
-            return Center(child: Text('Error: ${travelProvider.error}'));
-          }
-
-          if (travelProvider.travels.isEmpty) {
-            return const Center(child: Text('No travels found'));
-          }
-
-          return RefreshIndicator(
-            onRefresh: _loadTravels,
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: travelProvider.travels.length,
-              itemBuilder: (context, index) {
-                final travel = travelProvider.travels[index];
-                return TravelCard(
-                  travel: travel,
-                  onTap: () => _navigateToTravelDetails(travel),
-                );
-              },
-            ),
-          );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateTravelScreen(),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class TravelCard extends StatelessWidget {
-  final Travel travel;
-  final VoidCallback onTap;
-
-  const TravelCard({
-    super.key,
-    required this.travel,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(4),
-                ),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                travel.destination,
-                style: AppTheme.headline,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    travel.title,
-                    style: AppTheme.title,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    travel.description,
-                    style: AppTheme.body2,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today,
-                          size: 16, color: AppTheme.grey),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${travel.startDate.toString().split(' ')[0]} - ${travel.endDate.toString().split(' ')[0]}',
-                        style: AppTheme.caption,
-                      ),
-                      const Spacer(),
-                      Icon(Icons.group, size: 16, color: AppTheme.grey),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${travel.acceptedCompanions.length}/${travel.maxCompanions}',
-                        style: AppTheme.caption,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        icon: const Icon(Icons.add),
+        label: const Text('Create Travel'),
       ),
     );
   }

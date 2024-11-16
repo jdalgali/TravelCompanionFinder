@@ -1,97 +1,107 @@
+// lib/services/travel_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/travel.dart';
 
 class TravelService {
-  static const String baseUrl = 'http://localhost:3000/api/v1/travels';
-  final String? authToken;
+  String? _token;
+  static const String baseUrl = 'http://localhost:3000/api/v1';
 
-  TravelService({this.authToken});
+  TravelService({String? token}) : _token = token;
 
-  Future<List<Travel>> getTravel() async {
-    try {
-      final response = await http.get(
-        Uri.parse(baseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => Travel.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to load travels');
-      }
-    } catch (e) {
-      throw Exception('Connection error: $e');
-    }
+  void updateToken(String? token) {
+    _token = token;
   }
 
-  Future<Travel> createTravel(Map<String, dynamic> travelData) async {
-    try {
-      final response = await http.post(
-        Uri.parse(baseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken',
-        },
-        body: jsonEncode(travelData),
-      );
-
-      if (response.statusCode == 201) {
-        return Travel.fromJson(jsonDecode(response.body));
-      } else {
-        throw Exception('Failed to create travel');
-      }
-    } catch (e) {
-      throw Exception('Connection error: $e');
-    }
-  }
+  Map<String, String> get _headers => {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        if (_token != null) 'Authorization': 'Bearer $_token',
+      };
 
   Future<List<Travel>> searchTravels({
     String? destination,
     DateTime? startDate,
     DateTime? endDate,
-    List<String>? preferences,
+    Map<String, dynamic>? preferences,
+    int page = 1,
   }) async {
     try {
-      final queryParams = <String, String>{};
-
-      if (destination != null) {
-        queryParams['destination'] = destination;
-      }
-
-      if (startDate != null) {
-        queryParams['startDate'] = startDate.toIso8601String();
-      }
-
-      if (endDate != null) {
-        queryParams['endDate'] = endDate.toIso8601String();
-      }
-
-      if (preferences != null && preferences.isNotEmpty) {
-        queryParams['preferences'] = preferences.join(',');
-      }
-
-      final uri = Uri.parse(baseUrl).replace(queryParameters: queryParams);
       final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken',
-        },
+        Uri.parse('$baseUrl/travels/search').replace(
+          queryParameters: {
+            if (destination != null) 'destination': destination,
+            if (startDate != null) 'startDate': startDate.toIso8601String(),
+            if (endDate != null) 'endDate': endDate.toIso8601String(),
+            'page': page.toString(),
+          },
+        ),
+        headers: _headers,
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => Travel.fromJson(json)).toList();
+        final data = json.decode(response.body);
+        return (data['travels'] as List)
+            .map((json) => Travel.fromJson(json))
+            .toList();
       } else {
-        throw Exception('Failed to search travels');
+        throw Exception('Failed to load travels');
       }
     } catch (e) {
-      throw Exception('Connection error: $e');
+      throw Exception('Error searching travels: $e');
+    }
+  }
+
+  Future<Travel> getTravel(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/travels/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        return Travel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load travel');
+      }
+    } catch (e) {
+      throw Exception('Error getting travel: $e');
+    }
+  }
+
+  Future<Travel> createTravel(Travel travel) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/travels'),
+        headers: _headers,
+        body: json.encode(travel.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        return Travel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to create travel');
+      }
+    } catch (e) {
+      throw Exception('Error creating travel: $e');
+    }
+  }
+
+  Future<Travel> updateTravel(Travel travel) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/travels/${travel.id}'),
+        headers: _headers,
+        body: json.encode(travel.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return Travel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to update travel');
+      }
+    } catch (e) {
+      throw Exception('Error updating travel: $e');
     }
   }
 }

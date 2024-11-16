@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import 'register_screen.dart'; // Keeping this for navigation
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/login';
   const LoginScreen({super.key});
 
   @override

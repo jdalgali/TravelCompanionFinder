@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth.middleware');
 const travelController = require('../controllers/travel.controller');
-const authMiddleware = require('../middleware/auth.middleware');
 
-// Apply auth middleware to all routes
-router.use(authMiddleware);
-
-// Create new travel listing
-router.post('/', travelController.createTravel);
-
-// Get all travels with filters
-router.get('/', travelController.getTravels);
-
-// Get specific travel by ID
+router.post('/', auth, travelController.createTravel);
+router.get('/search', travelController.searchTravels);
 router.get('/:id', travelController.getTravelById);
-
-// Update travel
-router.put('/:id', travelController.updateTravel);
-
-// Apply for travel
-router.post('/:id/apply', travelController.applyForTravel);
+router.patch('/:id', auth, travelController.updateTravel);
+router.delete('/:id', auth, travelController.deleteTravel);
+router.post('/:id/join', auth, travelController.joinTravel);
 
 module.exports = router;
