@@ -63,8 +63,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 children: <Widget>[
                   getAppBarUI(),
                   Expanded(
+                    //TODO Travel Complement Transfer
                     child: NestedScrollView(
                       controller: _scrollController,
+                      //TODO Travel Complement Transfer
                       headerSliverBuilder:
                           (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
@@ -93,7 +95,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                         color: HotelAppTheme.buildLightTheme()
                             .colorScheme
                             .background,
+                            
+                        //TODO Travel Complement Transfer
                         child: ListView.builder(
+                          //TODO AWS
                           itemCount: hotelList.length,
                           padding: const EdgeInsets.only(top: 8),
                           itemBuilder: (BuildContext context, int index) {
