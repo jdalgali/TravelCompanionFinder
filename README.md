@@ -42,17 +42,20 @@ TravelCompanionFinder is a web application designed to help users find travel co
 ### Steps
 
 1. Clone the repository:
+
     ```sh
     git clone https://github.com/OrbitPeppermint/TravelCompanionFinder.git
     cd TravelCompanionFinder
     ```
 
 2. Install Flutter dependencies:
+
     ```sh
     flutter pub get
     ```
 
 3. Verify Flutter installation:
+
     ```sh
     flutter doctor
     ```
@@ -66,6 +69,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
 1. Download and install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
 
 2. Start the MongoDB server:
+
     ```sh
     mongod --dbpath <path_to_your_db_directory>
     ```
@@ -73,16 +77,19 @@ TravelCompanionFinder is a web application designed to help users find travel co
 #### Running the Backend
 
 1. Navigate to the `backend` directory:
+
     ```sh
     cd backend
     ```
 
 2. Install backend dependencies:
+
     ```sh
     npm install
     ```
 
 3. Create a `.env` file in the `backend` directory with the following content:
+
     ```env
     MONGODB_URI=mongodb://localhost:27017/travel_companion
     JWT_SECRET=your_secret_key
@@ -91,6 +98,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
     ```
 
 4. Start the backend server:
+
     ```sh
     npm run dev
     ```
@@ -98,16 +106,19 @@ TravelCompanionFinder is a web application designed to help users find travel co
 #### Running the Frontend
 
 1. Navigate to the `frontend` directory:
+
     ```sh
     cd frontend
     ```
 
 2. Install frontend dependencies:
+
     ```sh
     flutter pub get
     ```
 
 3. Run the frontend application:
+
     ```sh
     flutter run
     ```
@@ -117,11 +128,13 @@ TravelCompanionFinder is a web application designed to help users find travel co
 1. Ensure Docker and Docker Compose are installed and running on your machine.
 
 2. Navigate to the root directory of the project:
+
     ```sh
     cd TravelCompanionFinder
     ```
 
 3. Build and start the services using Docker Compose:
+
     ```sh
     docker-compose up --build
     ```
@@ -137,6 +150,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 1. Make your changes to the code.
 2. Restart the backend or frontend server as needed:
+
     ```sh
     npm run dev  # For backend
     flutter run  # For frontend
@@ -146,6 +160,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 1. Make your changes to the code.
 2. Rebuild and restart the services:
+
     ```sh
     docker-compose up --build
     ```
