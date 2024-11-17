@@ -1,55 +1,53 @@
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: your-dockerhub-username/frontend:latest
     ports:
       - "80:80"
+    depends_on:
+      - backend
     environment:
-      - API_URL=https://api.yourapp.com
+      - API_URL=http://backend:3000
     networks:
       - app-network
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: your-dockerhub-username/backend:latest
     ports:
       - "3000:3000"
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/travel_companion
-      - JWT_SECRET=${JWT_SECRET}
-      - NODE_ENV=production
+      - JWT_SECRET=your-secret-key
+    depends_on:
+      - mongodb
     networks:
       - app-network
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512M
 
   mongodb:
     image: mongo:latest
+    ports:
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
       - app-network
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 1G
+
+  mongo-express:
+    image: mongo-express:latest
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  mongodb_data:
