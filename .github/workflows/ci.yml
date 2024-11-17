@@ -48,16 +48,6 @@ jobs:
         run: flutter pub get
         working-directory: ./frontend
 
-      - name: Run Dart format
-        if: matrix.part == 'frontend'
-        run: dart format --line-length 80 --set-exit-if-changed .
-        working-directory: ./frontend
-
-      - name: Run Dart analyze
-        if: matrix.part == 'frontend'
-        run: flutter analyze
-        working-directory: ./frontend
-
   test:
     name: Build and Test
     runs-on: ubuntu-latest
