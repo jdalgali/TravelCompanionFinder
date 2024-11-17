@@ -3,12 +3,20 @@ import 'package:http/http.dart' as http;
 import '../utils/logger.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://localhost:3000/api/v1';
   String? _token;
+  static const String baseUrl = 'http://localhost:3000/api/v1';
+
+  AuthService({String? token}) : _token = token;
 
   void updateToken(String? token) {
     _token = token;
   }
+
+  Map<String, String> get _headers => {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        if (_token != null) 'Authorization': 'Bearer $_token',
+      };
 
   Future<Map<String, dynamic>> register({
     required String email,
@@ -102,11 +110,7 @@ class AuthService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/profile'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          if (_token != null) 'Authorization': 'Bearer $_token',
-        },
+        headers: _headers,
       );
 
       if (response.statusCode == 200) {
@@ -141,11 +145,7 @@ class AuthService {
     try {
       final response = await http.patch(
         Uri.parse('$baseUrl/profile'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          if (_token != null) 'Authorization': 'Bearer $_token',
-        },
+        headers: _headers,
         body: jsonEncode({
           'name': name,
           'email': email,
@@ -173,6 +173,34 @@ class AuthService {
       }
     } catch (e) {
       Logger.log('Update profile error', error: e);
+      return {
+        'success': false,
+        'message': 'Connection error: $e',
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> getUsers() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/users'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {
+          'success': true,
+          'users': data,
+        };
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['message'] ?? 'Failed to fetch users',
+        };
+      }
+    } catch (e) {
       return {
         'success': false,
         'message': 'Connection error: $e',

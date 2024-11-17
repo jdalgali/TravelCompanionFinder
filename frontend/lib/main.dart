@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/travel_provider.dart';
+import 'providers/message_provider.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/travels/create_travel_screen.dart';
+import 'screens/messages/message_screen.dart';
 import 'widgets/bottom_bar.dart';
 import 'app_theme.dart';
 
@@ -29,6 +31,11 @@ void main() async {
           create: (context) => TravelProvider(token: null),
           update: (context, auth, previousTravels) =>
               TravelProvider(token: auth.token)..updateToken(auth.token),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, MessageProvider>(
+          create: (context) => MessageProvider(token: null),
+          update: (context, auth, previousMessages) =>
+              MessageProvider(token: auth.token)..updateToken(auth.token),
         ),
       ],
       child: const MyApp(),
@@ -68,13 +75,16 @@ class MyApp extends StatelessWidget {
         },
       ),
       onGenerateRoute: (settings) {
-        // Handle dynamic routes
         if (settings.name == CreateTravelScreen.routeName) {
           final args = settings.arguments as Map<String, dynamic>?;
           return MaterialPageRoute(
             builder: (context) => CreateTravelScreen(
               initialTravel: args?['travel'],
             ),
+          );
+        } else if (settings.name == MessageScreen.routeName) {
+          return MaterialPageRoute(
+            builder: (context) => const MessageScreen(),
           );
         }
         return null;

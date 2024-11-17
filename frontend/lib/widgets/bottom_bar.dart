@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/travels/travel_list_screen.dart';
 import '../screens/profile/profile_screen.dart';
+import '../screens/messages/message_screen.dart'; // Import MessageScreen
 import '../app_theme.dart';
 
 class BottomBar extends StatefulWidget {
@@ -16,8 +17,8 @@ class _BottomBarState extends State<BottomBar> {
   static final List<Widget> _pages = <Widget>[
     const TravelListScreen(),
     const Center(child: Text("Explore")),
-    const Center(child: Text("Messages")),
-    const ProfileScreen(), // Add ProfileScreen here
+    const MessageScreen(), // Use MessageScreen here
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

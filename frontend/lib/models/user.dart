@@ -1,35 +1,27 @@
 class User {
   final String id;
-  final String email;
   final String name;
-  Map<String, dynamic>? preferences;
-  String? profileImage;
+  final String email;
 
   User({
     required this.id,
-    required this.email,
     required this.name,
-    this.preferences,
-    this.profileImage,
+    required this.email,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
-      email: json['email'],
+      id: json['_id'] ?? '',
       name: json['name'],
-      preferences: json['preferences'],
-      profileImage: json['profileImage'],
+      email: json['email'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'email': email,
+      '_id': id,
       'name': name,
-      'preferences': preferences,
-      'profileImage': profileImage,
+      'email': email,
     };
   }
 }

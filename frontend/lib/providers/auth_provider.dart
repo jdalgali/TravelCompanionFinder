@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../services/auth_service.dart';
 import '../utils/logger.dart';
+import '../models/user.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -10,11 +11,13 @@ class AuthProvider with ChangeNotifier {
 
   String? _token;
   Map<String, dynamic>? _user;
+  List<User> _users = [];
   bool _isLoading = false;
   String? _error;
 
   String? get token => _token;
   Map<String, dynamic>? get user => _user;
+  List<User> get users => _users;
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isAuthenticated => _token != null;
@@ -34,6 +37,28 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       Logger.log('Error loading stored user', error: e);
+    }
+  }
+
+  Future<void> fetchUsers() async {
+    try {
+      _isLoading = true;
+      _error = null;
+      notifyListeners();
+
+      final result = await _authService.getUsers();
+      if (result['success']) {
+        _users =
+            result['users'].map<User>((json) => User.fromJson(json)).toList();
+      } else {
+        _error = result['message'];
+      }
+    } catch (e) {
+      Logger.log('Fetch users error in provider', error: e);
+      _error = 'An unexpected error occurred';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -59,6 +84,7 @@ class AuthProvider with ChangeNotifier {
         await _storage.write(key: 'auth_token', value: _token);
         await _storage.write(key: 'user_data', value: jsonEncode(_user));
         _authService.updateToken(_token);
+        notifyListeners(); // Ensure state is updated
       } else {
         _error = result['message'];
       }
@@ -97,6 +123,7 @@ class AuthProvider with ChangeNotifier {
         await _storage.write(key: 'auth_token', value: _token);
         await _storage.write(key: 'user_data', value: jsonEncode(_user));
         _authService.updateToken(_token);
+        notifyListeners(); // Ensure state is updated
       } else {
         _error = result['message'];
       }
