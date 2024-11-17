@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
-# Install netcat
-RUN apk add --no-cache netcat-openbsd
+# Install netcat and dos2unix
+RUN apk add --no-cache netcat-openbsd dos2unix
 
 WORKDIR /usr/src/app
 
@@ -10,9 +10,9 @@ RUN npm ci
 
 COPY . .
 
-# Make wait-for script executable
+# Make wait-for script executable and convert line endings
 COPY wait-for.sh /wait-for.sh
-RUN chmod +x /wait-for.sh
+RUN dos2unix /wait-for.sh && chmod +x /wait-for.sh
 
 EXPOSE 3000
 
