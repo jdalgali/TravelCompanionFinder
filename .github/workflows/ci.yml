@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - dockerized-travelcompanionfinder
   pull_request:
     branches:
-      - main
+      - dockerized-travelcompanionfinder
 
 jobs:
   lint:
