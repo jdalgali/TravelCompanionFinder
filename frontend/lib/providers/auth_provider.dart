@@ -129,10 +129,28 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<Map<String, dynamic>> fetchProfile() async {
+    try {
+      final response = await _authService.getProfile();
+      if (response['success']) {
+        _user = response['user'];
+        notifyListeners();
+      }
+      return response;
+    } catch (e) {
+      Logger.log('Fetch profile error in provider', error: e);
+      return {
+        'success': false,
+        'message': 'An unexpected error occurred',
+      };
+    }
+  }
+
   Future<Map<String, dynamic>> updateProfile({
     required String name,
     required String email,
     String? password,
+    String? profileImage,
   }) async {
     try {
       _isLoading = true;
@@ -143,6 +161,7 @@ class AuthProvider with ChangeNotifier {
         name: name,
         email: email,
         password: password,
+        profileImage: profileImage,
       );
 
       if (result['success']) {
@@ -158,7 +177,7 @@ class AuthProvider with ChangeNotifier {
       _error = 'An unexpected error occurred';
       return {
         'success': false,
-        'message': _error,
+        'message': 'An unexpected error occurred',
       };
     } finally {
       _isLoading = false;

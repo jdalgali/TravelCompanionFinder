@@ -2,22 +2,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6
-  },
-  name: {
-    type: String,
-    required: true
-  },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  password: { type: String, required: true, minlength: 6 },
+  profileImage: { type: String },
+  preferences: { type: Map, of: String },
+  travelHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Travel' }],
   createdAt: {
     type: Date,
     default: Date.now

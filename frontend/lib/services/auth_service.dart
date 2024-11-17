@@ -98,10 +98,44 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>> getProfile() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          if (_token != null) 'Authorization': 'Bearer $_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return {
+          'success': true,
+          'user': data,
+        };
+      } else {
+        final error = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': error['message'] ?? 'Fetch profile failed',
+        };
+      }
+    } catch (e) {
+      Logger.log('Fetch profile error', error: e);
+      return {
+        'success': false,
+        'message': 'Connection error: $e',
+      };
+    }
+  }
+
   Future<Map<String, dynamic>> updateProfile({
     required String name,
     required String email,
     String? password,
+    String? profileImage,
   }) async {
     try {
       final response = await http.patch(
@@ -115,6 +149,7 @@ class AuthService {
           'name': name,
           'email': email,
           if (password != null) 'password': password,
+          if (profileImage != null) 'profileImage': profileImage,
         }),
       );
 

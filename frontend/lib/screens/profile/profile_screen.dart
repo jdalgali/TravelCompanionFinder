@@ -16,6 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _profileImageController = TextEditingController();
 
   @override
   void initState() {
@@ -24,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (user != null) {
       _nameController.text = user['name'];
       _emailController.text = user['email'];
+      _profileImageController.text = user['profileImage'] ?? '';
     }
   }
 
@@ -36,6 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           password: _passwordController.text.isEmpty
               ? null
               : _passwordController.text,
+          profileImage: _profileImageController.text.isEmpty
+              ? null
+              : _profileImageController.text,
         );
 
     if (!mounted) return;
@@ -118,6 +123,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _profileImageController,
+                decoration: const InputDecoration(
+                  labelText: 'Profile Image URL',
+                  border: OutlineInputBorder(),
+                ),
+              ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _updateProfile,
@@ -135,6 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _profileImageController.dispose();
     super.dispose();
   }
 }
