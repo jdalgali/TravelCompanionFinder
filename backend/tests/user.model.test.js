@@ -25,7 +25,11 @@ describe('User Model Test', () => {
         const user = new User({
             email: 'test@mail.com',
             password: 'password123',
-            name: 'Test User'
+            name: 'Test User',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         await user.save();
@@ -41,7 +45,11 @@ describe('User Model Test', () => {
         const user = new User({
             email: 'test2@mail.com',
             password: 'password123',
-            name: 'Test User 2'
+            name: 'Test User 2',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         await user.save();
@@ -58,7 +66,11 @@ describe('User Model Test', () => {
         const user = new User({
             email: 'test3@mail.com',
             password: 'password123',
-            name: 'Test User 3'
+            name: 'Test User 3',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         await user.save();
@@ -75,7 +87,11 @@ describe('User Model Test', () => {
         const user = new User({
             email: '',
             password: '',
-            name: ''
+            name: '',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         let error;
@@ -95,13 +111,21 @@ describe('User Model Test', () => {
         const user1 = new User({
             email: 'test4@mail.com',
             password: 'password123',
-            name: 'Test User 4'
+            name: 'Test User 4',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         const user2 = new User({
             email: 'test4@mail.com',
             password: 'password456',
-            name: 'Test User 5'
+            name: 'Test User 5',
+            preferences: {
+                activityLevel: 'Medium',
+                budget: 'Moderate'
+            }
         });
 
         await user1.save();
