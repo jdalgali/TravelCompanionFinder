@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/travels/travel_list_screen.dart';
+import '../screens/profile/profile_screen.dart';
 import '../app_theme.dart';
 
 class BottomBar extends StatefulWidget {
@@ -16,7 +17,7 @@ class _BottomBarState extends State<BottomBar> {
     const TravelListScreen(),
     const Center(child: Text("Explore")),
     const Center(child: Text("Messages")),
-    const Center(child: Text("Profile")),
+    const ProfileScreen(), // Add ProfileScreen here
   ];
 
   void _onItemTapped(int index) {

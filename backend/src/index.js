@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const logger = require('./utils/logger');
 const authRoutes = require('./routes/auth.routes');
 const travelRoutes = require('./routes/travel.routes');
+const profileRoutes = require('./routes/profile.routes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/travels', travelRoutes);
+app.use('/api/v1/profile', profileRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -38,16 +40,11 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    logger.info('Connected to MongoDB');
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, '0.0.0.0', () => {
-      logger.info(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    logger.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+  .then(() => logger.info('MongoDB connected'))
+  .catch((err) => logger.error('MongoDB connection error:', err));
 
-module.exports = app;
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});
