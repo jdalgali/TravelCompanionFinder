@@ -16,7 +16,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name, email, password, profileImage } = req.body;
+    const { name, email, password, profileImage, preferences } = req.body;
     const user = await User.findById(req.user.id);
 
     if (!user) {
@@ -27,6 +27,7 @@ const updateProfile = async (req, res) => {
     if (email) user.email = email;
     if (password) user.password = password; // Ensure password hashing is handled in the model
     if (profileImage) user.profileImage = profileImage;
+    if (preferences) user.preferences = preferences;
 
     await user.save();
     res.json({ message: 'Profile updated successfully' });

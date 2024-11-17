@@ -136,6 +136,7 @@ class AuthService {
     required String email,
     String? password,
     String? profileImage,
+    Map<String, dynamic>? preferences,
   }) async {
     try {
       final response = await http.patch(
@@ -150,6 +151,7 @@ class AuthService {
           'email': email,
           if (password != null) 'password': password,
           if (profileImage != null) 'profileImage': profileImage,
+          if (preferences != null) 'preferences': preferences,
         }),
       );
 

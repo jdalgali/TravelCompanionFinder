@@ -17,37 +17,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _profileImageController = TextEditingController();
+  String _activityLevel = 'Medium';
+  String _budget = 'Moderate';
+  final List<String> _travelStyle = ['Adventure'];
 
   @override
   void initState() {
     super.initState();
     final user = context.read<AuthProvider>().user;
     if (user != null) {
-      _nameController.text = user['name'];
-      _emailController.text = user['email'];
+      _nameController.text = user['name'] ?? '';
+      _emailController.text = user['email'] ?? '';
       _profileImageController.text = user['profileImage'] ?? '';
+      _activityLevel = user['preferences']?['activityLevel'] ?? 'Medium';
+      _budget = user['preferences']?['budget'] ?? 'Moderate';
+      _travelStyle.addAll(List<String>.from(
+          user['preferences']?['travelStyle'] ?? ['Adventure']));
     }
+    print('ProfileScreen initialized with user: $user');
   }
 
   Future<void> _updateProfile() async {
     if (!_formKey.currentState!.validate()) return;
 
     final result = await context.read<AuthProvider>().updateProfile(
-          name: _nameController.text,
-          email: _emailController.text,
-          password: _passwordController.text.isEmpty
-              ? null
-              : _passwordController.text,
-          profileImage: _profileImageController.text.isEmpty
-              ? null
-              : _profileImageController.text,
-        );
-
-    if (!mounted) return;
+      name: _nameController.text,
+      email: _emailController.text,
+      password:
+          _passwordController.text.isEmpty ? null : _passwordController.text,
+      profileImage: _profileImageController.text.isEmpty
+          ? null
+          : _profileImageController.text,
+      preferences: {
+        'activityLevel': _activityLevel,
+        'budget': _budget,
+        'travelStyle': _travelStyle,
+      },
+    );
 
     if (result['success']) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
+        SnackBar(content: Text('Profile updated successfully')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,37 +66,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> _logout() async {
-    await context.read<AuthProvider>().logout();
-    if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed('/login');
-  }
-
   @override
   Widget build(BuildContext context) {
+    print('Building ProfileScreen');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: _logout,
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -94,13 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -108,28 +99,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value != null && value.isNotEmpty && value.length < 6) {
-                    return 'Password should be at least 6 characters';
+                    return 'Password must be at least 6 characters';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: _profileImageController,
+                decoration:
+                    const InputDecoration(labelText: 'Profile Image URL'),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _activityLevel,
                 decoration: const InputDecoration(
-                  labelText: 'Profile Image URL',
+                  labelText: 'Activity Level',
                   border: OutlineInputBorder(),
                 ),
+                items: ['Low', 'Medium', 'High']
+                    .map((level) => DropdownMenuItem(
+                          value: level,
+                          child: Text(level),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _activityLevel = value);
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _budget,
+                decoration: const InputDecoration(
+                  labelText: 'Budget',
+                  border: OutlineInputBorder(),
+                ),
+                items: ['Budget', 'Moderate', 'Luxury']
+                    .map((budget) => DropdownMenuItem(
+                          value: budget,
+                          child: Text(budget),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _budget = value);
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 8.0,
+                children:
+                    ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature']
+                        .map((style) => FilterChip(
+                              label: Text(style),
+                              selected: _travelStyle.contains(style),
+                              onSelected: (selected) {
+                                setState(() {
+                                  if (selected) {
+                                    _travelStyle.add(style);
+                                  } else {
+                                    _travelStyle.remove(style);
+                                  }
+                                });
+                              },
+                            ))
+                        .toList(),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

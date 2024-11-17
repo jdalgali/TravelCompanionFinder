@@ -3,10 +3,14 @@ const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-  password: { type: String, required: true, minlength: 6 },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   profileImage: { type: String },
-  preferences: { type: Map, of: String },
+  preferences: {
+    activityLevel: { type: String, enum: ['Low', 'Medium', 'High'] },
+    budget: { type: String, enum: ['Budget', 'Moderate', 'Luxury'] },
+    travelStyle: [{ type: String, enum: ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature'] }],
+  },
   travelHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Travel' }],
   createdAt: {
     type: Date,
