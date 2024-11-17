@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   profileImage: { type: String },
   preferences: {
-    activityLevel: { type: String, enum: ['Low', 'Medium', 'High'] },
-    budget: { type: String, enum: ['Budget', 'Moderate', 'Luxury'] },
+    activityLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true },
+    budget: { type: String, enum: ['Budget', 'Moderate', 'Luxury'], required: true },
     travelStyle: [{ type: String, enum: ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature'] }],
   },
   travelHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Travel' }],

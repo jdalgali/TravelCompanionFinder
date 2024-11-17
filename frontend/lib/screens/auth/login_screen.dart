@@ -31,8 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result['message'])),
       );
+    } else {
+      // Navigate to the home screen or another screen after successful login
+      Navigator.pushReplacementNamed(
+          context, '/home'); // Adjust the route as needed
     }
-    // No need to navigate - the main.dart Consumer will handle it
   }
 
   @override

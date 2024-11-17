@@ -188,13 +188,13 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = json.decode(response.body);
         return {
           'success': true,
           'users': data,
         };
       } else {
-        final error = jsonDecode(response.body);
+        final error = json.decode(response.body);
         return {
           'success': false,
           'message': error['message'] ?? 'Failed to fetch users',

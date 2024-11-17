@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
+import 'package:flutter/foundation.dart';
 import '../../providers/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,6 +23,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _budget = 'Moderate';
   final List<String> _travelStyle = ['Adventure'];
 
+  final logger = Logger();
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _travelStyle.addAll(List<String>.from(
           user['preferences']?['travelStyle'] ?? ['Adventure']));
     }
-    print('ProfileScreen initialized with user: $user');
+    logger.d('ProfileScreen initialized with user: $user');
   }
 
   Future<void> _updateProfile() async {
@@ -55,6 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
 
+    if (!mounted) return;
+
     if (result['success']) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profile updated successfully')),
@@ -68,7 +74,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Building ProfileScreen');
+    if (kDebugMode) {
+      print('Building ProfileScreen');
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -156,27 +164,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               Wrap(
                 spacing: 8.0,
-                children:
-                    ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature']
-                        .map((style) => FilterChip(
-                              label: Text(style),
-                              selected: _travelStyle.contains(style),
-                              onSelected: (selected) {
-                                setState(() {
-                                  if (selected) {
-                                    _travelStyle.add(style);
-                                  } else {
-                                    _travelStyle.remove(style);
-                                  }
-                                });
-                              },
-                            ))
-                        .toList(),
+                children: ['Adventure', 'Relaxation', 'Cultural', 'Nature']
+                    .map((style) => FilterChip(
+                          label: Text(style),
+                          selected: _travelStyle.contains(style),
+                          onSelected: (selected) {
+                            setState(() {
+                              if (selected) {
+                                _travelStyle.add(style);
+                              } else {
+                                _travelStyle.remove(style);
+                              }
+                            });
+                          },
+                        ))
+                    .toList(),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _updateProfile,
                 child: const Text('Update Profile'),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () async {
+                  await context.read<AuthProvider>().logout();
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+                child: const Text('Logout'),
               ),
             ],
           ),

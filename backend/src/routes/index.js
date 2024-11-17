@@ -4,6 +4,7 @@ const authController = require('../controllers/auth.controller');
 const profileRoutes = require('./profile.routes');
 const travelRoutes = require('./travel.routes');
 const messageRoutes = require('./message.routes');
+const userRoutes = require('./user.routes');
 
 // Auth routes
 router.post('/auth/register', authController.register);
@@ -17,5 +18,8 @@ router.use('/travels', travelRoutes);
 
 // Message routes
 router.use('/messages', messageRoutes);
+
+// User routes
+router.use('/users', userRoutes);
 
 module.exports = router;

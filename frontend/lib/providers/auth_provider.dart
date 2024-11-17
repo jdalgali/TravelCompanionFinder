@@ -8,32 +8,34 @@ import '../models/user.dart';
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-
-  String? _token;
   Map<String, dynamic>? _user;
-  List<User> _users = [];
+  String? _token;
   bool _isLoading = false;
   String? _error;
+  List<User> _users = [];
 
-  String? get token => _token;
   Map<String, dynamic>? get user => _user;
-  List<User> get users => _users;
+  bool get isAuthenticated => _user != null;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  bool get isAuthenticated => _token != null;
+  String? get token => _token;
+  List<User> get users => _users; // Add this getter
 
   AuthProvider() {
-    loadStoredUser();
+    _loadStoredUser();
   }
 
-  Future<void> loadStoredUser() async {
+  Future<void> _loadStoredUser() async {
     try {
-      _token = await _storage.read(key: 'auth_token');
+      final token = await _storage.read(key: 'auth_token');
+      if (token == null) return;
+
+      _token = token;
+      _authService.updateToken(_token);
       final userStr = await _storage.read(key: 'user_data');
       if (userStr != null) {
         _user = jsonDecode(userStr);
       }
-      _authService.updateToken(_token);
       notifyListeners();
     } catch (e) {
       Logger.log('Error loading stored user', error: e);

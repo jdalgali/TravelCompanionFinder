@@ -87,4 +87,34 @@ class TravelService {
       throw Exception('Error updating travel: $e');
     }
   }
+
+  Future<List<Travel>> getTravels() async {
+    try {
+      final response =
+          await http.get(Uri.parse('$baseUrl/travels'), headers: _headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Fetched travels data: $data'); // Add this line
+        return (data['travels'] as List)
+            .map((json) => Travel.fromJson(json))
+            .toList();
+      } else {
+        throw Exception('Failed to load travels');
+      }
+    } catch (e) {
+      throw Exception('Error fetching travels: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> getUserPreferences(String userId) async {
+    final response = await http.get(
+        Uri.parse('$baseUrl/users/$userId/preferences'),
+        headers: _headers);
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load user preferences');
+    }
+  }
 }

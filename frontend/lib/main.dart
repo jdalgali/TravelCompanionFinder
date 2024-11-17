@@ -5,9 +5,13 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/travel_provider.dart';
 import 'providers/message_provider.dart';
+import 'providers/explore_provider.dart';
+import 'services/recommendation_service.dart';
+import 'services/travel_service.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/travels/create_travel_screen.dart';
 import 'screens/messages/message_screen.dart';
+import 'screens/explore/explore_screen.dart';
 import 'widgets/bottom_bar.dart';
 import 'app_theme.dart';
 
@@ -37,6 +41,12 @@ void main() async {
           update: (context, auth, previousMessages) =>
               MessageProvider(token: auth.token)..updateToken(auth.token),
         ),
+        ChangeNotifierProxyProvider<AuthProvider, ExploreProvider>(
+          create: (context) => ExploreProvider(
+              RecommendationService(TravelService(token: null))),
+          update: (context, auth, previousExplore) => ExploreProvider(
+              RecommendationService(TravelService(token: auth.token))),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -48,17 +58,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kIsWeb) {
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarDividerColor: Colors.grey,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ));
-    }
-
     return MaterialApp(
       title: 'Travel Companion Finder',
       debugShowCheckedModeBanner: false,
@@ -67,7 +66,6 @@ class MyApp extends StatelessWidget {
         textTheme: AppTheme.textTheme,
         platform: TargetPlatform.iOS,
         splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
       ),
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
@@ -85,6 +83,10 @@ class MyApp extends StatelessWidget {
         } else if (settings.name == MessageScreen.routeName) {
           return MaterialPageRoute(
             builder: (context) => const MessageScreen(),
+          );
+        } else if (settings.name == ExploreScreen.routeName) {
+          return MaterialPageRoute(
+            builder: (context) => const ExploreScreen(),
           );
         }
         return null;

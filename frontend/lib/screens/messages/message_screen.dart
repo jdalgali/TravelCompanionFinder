@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/message_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../models/user.dart';
 
 class MessageScreen extends StatefulWidget {
   static const routeName = '/messages';
@@ -20,6 +21,7 @@ class _MessageScreenState extends State<MessageScreen> {
   void initState() {
     super.initState();
     context.read<MessageProvider>().fetchMessages();
+    context.read<AuthProvider>().fetchUsers(); // Fetch users initially
   }
 
   Future<void> _sendMessage() async {
@@ -31,16 +33,24 @@ class _MessageScreenState extends State<MessageScreen> {
     _messageController.clear();
   }
 
+  Future<void> _refreshUsers() async {
+    await context.read<AuthProvider>().fetchUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
     final messages = context.watch<MessageProvider>().messages;
-    final users = context
-        .watch<AuthProvider>()
-        .users; // Assuming you have a list of users in AuthProvider
+    final users = context.watch<AuthProvider>().users;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Messages'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshUsers,
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -52,7 +62,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 _selectedUserId = newValue;
               });
             },
-            items: users.map<DropdownMenuItem<String>>((user) {
+            items: users.map<DropdownMenuItem<String>>((User user) {
               return DropdownMenuItem<String>(
                 value: user.id,
                 child: Text(user.name),
