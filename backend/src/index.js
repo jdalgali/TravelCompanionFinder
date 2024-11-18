@@ -30,38 +30,19 @@ app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1', userRoutes);
 
-// Error handling
+// Error handling for JSON parsing
 app.use((err, req, res, next) => {
-  logger.error('Error:', err);
-  res.status(500).json({
-    message: err.message || 'Internal server error',
-  });
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    logger.error('Bad JSON:', err);
+    return res.status(400).json({ message: 'Invalid JSON' });
+  }
+  next(err);
 });
 
-// Function to connect to the database
-function connectToDatabase() {
-  return mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-}
+// General error handling
+app.use((err, req, res, next) => {
+  logger.error('Error:', err);
+  res.status(500).json({ message: 'Internal server error' });
+});
 
-// Start the server only if the script is run directly
-if (require.main === module) {
-  // Connect to the database
-  connectToDatabase()
-    .then(() => {
-      logger.info('MongoDB connected');
-
-      // Start the server
-      const PORT = process.env.PORT || 3000;
-      app.listen(PORT, () => {
-        logger.info(`Server running on port ${PORT}`);
-      });
-    })
-    .catch((err) => {
-      logger.error('MongoDB connection error:', err);
-    });
-}
-
-module.exports = { app, connectToDatabase };
+module.exports = app;

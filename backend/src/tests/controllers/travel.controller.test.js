@@ -1,7 +1,7 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const { app } = require('../../index');
+const app = require('../../index');
 const Travel = require('../../models/travel.model');
 const User = require('../../models/user.model');
 const jwt = require('jsonwebtoken');
