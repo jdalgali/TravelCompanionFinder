@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/travel.dart';
+import '../config/config.dart';
 
 class TravelService {
   String? _token;
-  static const String baseUrl = 'http://localhost:3000/api/v1';
+  static const String baseUrl = Config.apiUrl;
 
   TravelService({String? token}) : _token = token;
 

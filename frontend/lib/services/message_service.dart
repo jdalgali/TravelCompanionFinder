@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/message.dart';
+import '../config/config.dart';
 
 class MessageService {
   String? _token;
-  static const String baseUrl = 'http://localhost:3000/api/v1';
+  static const String baseUrl = Config.apiUrl;
 
   MessageService({String? token}) : _token = token;
 

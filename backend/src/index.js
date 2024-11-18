@@ -11,10 +11,10 @@ const userRoutes = require('./routes/index');
 
 const app = express();
 
-// Simple CORS setup
 const corsOptions = {
-  origin: 'http://localhost',
+  origin: process.env.CORS_ORIGIN || 'http://localhost',
   optionsSuccessStatus: 200,
+  credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -44,5 +44,17 @@ app.use((err, req, res, next) => {
   logger.error('Error:', err);
   res.status(500).json({ message: 'Internal server error' });
 });
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    retryWrites: true
+  })
+  .catch((err) => {
+    logger.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
 
 module.exports = app;

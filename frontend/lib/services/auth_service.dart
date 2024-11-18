@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../utils/logger.dart';
+import '../config/config.dart';
 
 class AuthService {
   String? _token;
-  static const String baseUrl = 'http://localhost:3000/api/v1';
+  static const String baseUrl = Config.apiUrl;
 
   AuthService({String? token}) : _token = token;
 
