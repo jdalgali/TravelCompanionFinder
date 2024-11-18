@@ -6,11 +6,16 @@ DES424 Cloud App Development Project - SIIT Thammasat University Bangkok Group 0
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Running Locally](#running-locally)
+    - [Setting Up MongoDB](#setting-up-mongodb)
+    - [Running the Backend](#running-the-backend)
+    - [Running the Frontend](#running-the-frontend)
   - [Running with Docker Compose](#running-with-docker-compose)
   - [Rebuilding After Changes](#rebuilding-after-changes)
+- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -20,41 +25,62 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 ## Features
 
-- User registration and authentication
+- User registration and authentication with JWT
 - Profile creation and management
 - Search for travel companions based on preferences
+- Real-time messaging between users
+- Travel listings creation and management
+- Advanced search filters for destinations
 - Secure storage of user data
 - Responsive design for mobile and desktop
+
+## Technologies Used
+
+### Backend
+
+- **Node.js** with Express
+- **MongoDB** with Mongoose
+- **JWT** for authentication
+- **Winston** for logging
+- **Jest** for testing
+
+### Frontend
+
+- **Flutter** for web/mobile
+- **Provider** for state management
+- **Flutter Secure Storage**
+- **HTTP** package for API integration
 
 ## Installation
 
 ### Prerequisites
 
-- [Flutter](https://docs.flutter.dev/get-started/install)
+- [Flutter](https://docs.flutter.dev/get-started/install) (≥ 3.10.0)
+- [Node.js](https://nodejs.org/) (≥ 18.x)
+- [MongoDB](https://www.mongodb.com/try/download/community) (for local development)
+- [Docker](https://www.docker.com/products/docker-desktop) (optional, for Docker Compose setup)
+- [Docker Compose](https://docs.docker.com/compose/install/) (optional, for Docker Compose setup)
 - [Android Studio](https://developer.android.com/studio)
 - [VS Code](https://code.visualstudio.com/)
 - [Chrome](https://www.google.com/chrome/)
 - [Android Toolchain](https://developer.android.com/studio/command-line)
-- [MongoDB](https://www.mongodb.com/try/download/community) (for local development without Docker)
-- [Docker](https://www.docker.com/products/docker-desktop) (optional, for Docker Compose setup)
-- [Docker Compose](https://docs.docker.com/compose/install/) (optional, for Docker Compose setup)
 
 ### Steps
 
-1. Clone the repository:
+1. **Clone the repository:**
 
     ```sh
     git clone https://github.com/OrbitPeppermint/TravelCompanionFinder.git
     cd TravelCompanionFinder
     ```
 
-2. Install Flutter dependencies:
+2. **Install Flutter dependencies:**
 
     ```sh
     flutter pub get
     ```
 
-3. Verify Flutter installation:
+3. **Verify Flutter installation:**
 
     ```sh
     flutter doctor
@@ -66,9 +92,9 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 #### Setting Up MongoDB
 
-1. Download and install MongoDB from the [official website](https://www.mongodb.com/try/download/community).
+1. **Download and install MongoDB** from the [official website](https://www.mongodb.com/try/download/community).
 
-2. Start the MongoDB server:
+2. **Start the MongoDB server:**
 
     ```sh
     mongod --dbpath <path_to_your_db_directory>
@@ -76,19 +102,19 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 #### Running the Backend
 
-1. Navigate to the `backend` directory:
+1. **Navigate to the `backend` directory:**
 
     ```sh
     cd backend
     ```
 
-2. Install backend dependencies:
+2. **Install backend dependencies:**
 
     ```sh
     npm install
     ```
 
-3. Create a `.env` file in the `backend` directory with the following content:
+3. **Create a `.env` file** in the `backend` directory with the following content:
 
     ```env
     MONGODB_URI=mongodb://localhost:27017/travel_companion
@@ -97,7 +123,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
     PORT=3000
     ```
 
-4. Start the backend server:
+4. **Start the backend server:**
 
     ```sh
     npm run dev
@@ -105,19 +131,19 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 #### Running the Frontend
 
-1. Navigate to the `frontend` directory:
+1. **Navigate to the `frontend` directory:**
 
     ```sh
     cd frontend
     ```
 
-2. Install frontend dependencies:
+2. **Install frontend dependencies:**
 
     ```sh
     flutter pub get
     ```
 
-3. Run the frontend application:
+3. **Run the frontend application:**
 
     ```sh
     flutter run
@@ -125,21 +151,21 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 ### Running with Docker Compose
 
-1. Ensure Docker and Docker Compose are installed and running on your machine.
+1. **Ensure Docker and Docker Compose** are installed and running on your machine.
 
-2. Navigate to the root directory of the project:
+2. **Navigate to the root directory** of the project:
 
     ```sh
     cd TravelCompanionFinder
     ```
 
-3. Build and start the services using Docker Compose:
+3. **Build and start the services using Docker Compose:**
 
     ```sh
     docker-compose up --build
     ```
 
-4. Access the application:
+4. **Access the application:**
     - Frontend: [http://localhost](http://localhost)
     - Backend: [http://localhost:3000](http://localhost:3000)
     - Mongo Express: [http://localhost:8081](http://localhost:8081)
@@ -148,8 +174,8 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 #### Locally
 
-1. Make your changes to the code.
-2. Restart the backend or frontend server as needed:
+1. **Make your changes** to the code.
+2. **Restart the backend or frontend server** as needed:
 
     ```sh
     npm run dev  # For backend
@@ -158,23 +184,63 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 #### Docker Compose
 
-1. Make your changes to the code.
-2. Rebuild and restart the services:
+1. **Make your changes** to the code.
+2. **Rebuild and restart the services:**
 
     ```sh
     docker-compose up --build
     ```
 
+## API Documentation
+
+### Authentication Endpoints
+
+- **POST** `/api/v1/auth/register` - Register new user
+- **POST** `/api/v1/auth/login` - User login
+
+### Profile Endpoints
+
+- **GET** `/api/v1/profile` - Get user profile
+- **PATCH** `/api/v1/profile` - Update user profile
+
+### Travel Endpoints
+
+- **GET** `/api/v1/travels` - List travel listings
+- **POST** `/api/v1/travels` - Create travel listing
+- **GET** `/api/v1/travels/:id` - Get travel details
+- **PATCH** `/api/v1/travels/:id` - Update travel listing
+- **DELETE** `/api/v1/travels/:id` - Delete travel listing
+
+### Message Endpoints
+
+- **GET** `/api/v1/messages` - Get user messages
+- **POST** `/api/v1/messages` - Send new message
+
 ## Contributing
 
 We welcome contributions to the TravelCompanionFinder project. Please follow these steps to contribute:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Open a pull request.
+1. **Fork the repository.**
+2. **Create a new branch:**
+
+    ```sh
+    git checkout -b feature-branch
+    ```
+
+3. **Make your changes.**
+4. **Commit your changes:**
+
+    ```sh
+    git commit -m 'Add some feature'
+    ```
+
+5. **Push to the branch:**
+
+    ```sh
+    git push origin feature-branch
+    ```
+
+6. **Open a pull request.**
 
 ## License
 
