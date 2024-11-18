@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/travel_companion
+      - JWT_SECRET=your-secret-key
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
