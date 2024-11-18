@@ -7,14 +7,14 @@ const authRoutes = require('./routes/auth.routes');
 const travelRoutes = require('./routes/travel.routes');
 const profileRoutes = require('./routes/profile.routes');
 const messageRoutes = require('./routes/message.routes');
-const userRoutes = require('./routes/index'); // Ensure this is imported
+const userRoutes = require('./routes/index');
 
 const app = express();
 
 // Simple CORS setup
 const corsOptions = {
   origin: 'http://localhost',
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
@@ -30,25 +30,19 @@ app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1', userRoutes);
 
-// Error handling
+// Error handling for JSON parsing
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    logger.error('Bad JSON:', err);
+    return res.status(400).json({ message: 'Invalid JSON' });
+  }
+  next(err);
+});
+
+// General error handling
 app.use((err, req, res, next) => {
   logger.error('Error:', err);
-  res.status(500).json({
-    message: err.message || 'Internal server error'
-  });
+  res.status(500).json({ message: 'Internal server error' });
 });
 
-// Database connection
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => logger.info('MongoDB connected'))
-  .catch((err) => logger.error('MongoDB connection error:', err));
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
-});
+module.exports = app;

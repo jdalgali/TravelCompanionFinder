@@ -58,11 +58,11 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, preferences } = req.body;
 
-    if (!email || !password || !name) {
+    if (!email || !password || !name || !preferences) {
       return res.status(400).json({
-        message: 'Email, password, and name are required'
+        message: 'Email, password, name, and preferences are required'
       });
     }
 
@@ -73,11 +73,23 @@ const register = async (req, res) => {
       });
     }
 
+    // Validate preferences
+    const { activityLevel, budget } = preferences;
+    const validActivityLevels = ['Low', 'Medium', 'High'];
+    const validBudgets = ['Budget', 'Moderate', 'Luxury'];
+
+    if (!validActivityLevels.includes(activityLevel) || !validBudgets.includes(budget)) {
+      return res.status(400).json({
+        message: 'Invalid preferences values'
+      });
+    }
+
     // Create new user - let the model middleware handle password hashing
     const user = new User({
       email,
       password, // Send raw password, let model middleware hash it
-      name
+      name,
+      preferences
     });
 
     await user.save();

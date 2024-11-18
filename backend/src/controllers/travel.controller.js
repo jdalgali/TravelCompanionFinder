@@ -74,8 +74,8 @@ exports.getTravels = async (req, res) => {
 exports.getTravelById = async (req, res) => {
   try {
     const travel = await Travel.findById(req.params.id)
-      .populate('userId', 'name')
-      .populate('acceptedCompanions', 'name');
+      .populate('creator', 'name')
+      .populate('currentCompanions', 'name');
 
     if (!travel) {
       return res.status(404).json({ message: 'Travel not found' });
@@ -85,7 +85,7 @@ exports.getTravelById = async (req, res) => {
   } catch (error) {
     logger.error('Error fetching travel:', error);
     res.status(500).json({
-      message: 'Error fetching travel details'
+      message: 'Error fetching travel details',
     });
   }
 };
