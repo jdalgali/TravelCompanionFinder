@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV FLUTTER_HOME=/usr/local/flutter
 ENV PATH="${FLUTTER_HOME}/bin:${PATH}"
 
-# Install required dependencies
+# Install required dependencies and create a non-root user
 RUN apt-get update && apt-get install -y \
     curl \
     fonts-droid-fallback \
@@ -22,7 +22,14 @@ RUN apt-get update && apt-get install -y \
     wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && git clone https://github.com/flutter/flutter.git ${FLUTTER_HOME} \
+    && useradd -m flutteruser \
+    && mkdir -p ${FLUTTER_HOME} && chown -R flutteruser:flutteruser ${FLUTTER_HOME}
+
+# Switch to the non-root user
+USER flutteruser
+
+# Clone Flutter repository and set up Flutter
+RUN git clone https://github.com/flutter/flutter.git ${FLUTTER_HOME} \
     && flutter config --no-analytics \
     && flutter doctor \
     && flutter config --enable-web
@@ -31,7 +38,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the app files
-COPY . .
+COPY --chown=flutteruser:flutteruser . .
 
 # Get app dependencies and build for web
 RUN flutter pub get && flutter build web --release
