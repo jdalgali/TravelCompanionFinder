@@ -45,12 +45,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal server error' });
 });
 
+const PORT = process.env.PORT || 3000;
+
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverSelectionTimeoutMS: 5000,
     retryWrites: true
+  })
+  .then(() => {
+    app.listen(PORT, () => {
+      logger.info(`Backend is running successfully on port ${PORT}`);
+    });
   })
   .catch((err) => {
     logger.error('MongoDB connection error:', err);
