@@ -5,7 +5,7 @@ import '../config/config.dart';
 
 class MessageService {
   String? _token;
-  static const String baseUrl = Config.apiUrl;
+  static String baseUrl = Config.apiUrl;
 
   MessageService({String? token}) : _token = token;
 

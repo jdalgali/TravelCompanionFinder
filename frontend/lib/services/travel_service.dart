@@ -5,7 +5,7 @@ import '../config/config.dart';
 
 class TravelService {
   String? _token;
-  static const String baseUrl = Config.apiUrl;
+  static String baseUrl = Config.apiUrl;
 
   TravelService({String? token}) : _token = token;
 
