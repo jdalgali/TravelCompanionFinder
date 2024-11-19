@@ -1,0 +1,79 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "mongodb_data",
+      "host": {
+        "sourcePath": "/var/app/mongodb_data"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "mongodb",
+      "image": "mongo:latest",
+      "memory": 256,
+      "mountPoints": [
+        {
+          "sourceVolume": "mongodb_data",
+          "containerPath": "/data/db",
+          "readOnly": false
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 27017,
+          "containerPort": 27017
+        }
+      ]
+    },
+    {
+      "name": "backend",
+      "image": "dalgajan/backend-tca:${TAG}",
+      "memory": 256,
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "${NODE_ENV}"
+        },
+        {
+          "name": "MONGODB_URI",
+          "value": "mongodb://mongodb:27017/travel_companion_${NODE_ENV}"
+        },
+        {
+          "name": "JWT_SECRET",
+          "value": "${JWT_SECRET}"
+        },
+        {
+          "name": "PORT",
+          "value": "3000"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "containerPort": 3000
+        }
+      ],
+      "links": ["mongodb"]
+    },
+    {
+      "name": "frontend",
+      "image": "dalgajan/frontend-tca:${TAG}",
+      "memory": 256,
+      "environment": [
+        {
+          "name": "REACT_APP_API_URL",
+          "value": "http://backend:3000"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["backend"]
+    }
+  ]
+}
