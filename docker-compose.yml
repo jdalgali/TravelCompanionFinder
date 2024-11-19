@@ -4,7 +4,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - API_URL=http://localhost:3000/api/v1  # For local development
+        - API_URL=http://localhost:3000/api/v1
     ports:
       - "80:80"
     depends_on:

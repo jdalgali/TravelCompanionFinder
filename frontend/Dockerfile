@@ -42,10 +42,13 @@ COPY --chown=flutteruser:flutteruser . .
 
 # Get app dependencies and build for web
 RUN flutter pub get
-# Build with the API URL argument
-RUN flutter build web \
-    --dart-define=API_URL=/api/v1 \
-    --release
+
+# Accept the API_URL argument
+ARG API_URL
+ENV API_URL=${API_URL}
+
+# Build the Flutter web app with the API_URL
+RUN flutter pub get && flutter build web --dart-define=API_URL=${API_URL} --release
 
 # Stage 2: Serve the app using Nginx
 FROM nginx:alpine
