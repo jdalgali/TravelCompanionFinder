@@ -5,7 +5,7 @@ import '../config/config.dart';
 
 class AuthService {
   String? _token;
-  static const String baseUrl = Config.apiUrl;
+  static String baseUrl = Config.apiUrl;
 
   AuthService({String? token}) : _token = token;
 

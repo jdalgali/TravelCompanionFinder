@@ -1,0 +1,35 @@
+version: '3'
+services:
+  nginx:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    image: dalgajan/frontend-tcf:latest
+    expose:
+      - "80"
+
+  backend:
+    image: dalgajan/backend-tcf:latest
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/travel_companion
+      - JWT_SECRET=prod-secret-key
+      - CORS_ORIGIN=${CORS_ORIGIN}
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

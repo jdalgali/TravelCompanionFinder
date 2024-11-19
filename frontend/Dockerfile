@@ -41,7 +41,14 @@ WORKDIR /app
 COPY --chown=flutteruser:flutteruser . .
 
 # Get app dependencies and build for web
-RUN flutter pub get && flutter build web --release
+RUN flutter pub get
+
+# Accept the API_URL argument
+ARG API_URL
+ENV API_URL=${API_URL}
+
+# Build the Flutter web app with the API_URL
+RUN flutter pub get && flutter build web --dart-define=API_URL=${API_URL} --release
 
 # Stage 2: Serve the app using Nginx
 FROM nginx:alpine
@@ -49,7 +56,7 @@ FROM nginx:alpine
 # Copy nginx configuration
 COPY --from=builder /app/build/web /usr/share/nginx/html
 
-# Create a simple nginx config
+# Create a simple nginx config that handles Flutter routing
 RUN echo 'server { \
     listen 80; \
     location / { \
@@ -59,8 +66,6 @@ RUN echo 'server { \
     } \
     }' > /etc/nginx/conf.d/default.conf
 
-# Expose port 80
 EXPOSE 80
 
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
