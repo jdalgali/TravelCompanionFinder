@@ -11,14 +11,14 @@ let token;
 let userId;
 
 beforeAll(async () => {
-  // Start In-Memory MongoDB Server
+  // Set test environment
+  process.env.NODE_ENV = 'test';
+  
+  // Start MongoDB Memory Server
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
 
-  // Disconnect from any previous connections
   await mongoose.disconnect();
-
-  // Connect Mongoose to In-Memory MongoDB
   await mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -44,20 +44,36 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // Close Database Connection
   await mongoose.disconnect();
   await mongoServer.stop();
 });
 
-afterEach(async () => {
-  // Clean Up Database
+beforeEach(async () => {
   await Travel.deleteMany({});
-  await User.deleteMany({});
+  // Create a fresh test user before each test if needed
+  const user = await User.findById(userId);
+  if (!user) {
+    const newUser = new User({
+      _id: userId,
+      email: 'testuser@example.com',
+      password: 'password123',
+      name: 'Test User',
+      preferences: {
+        activityLevel: 'Medium',
+        budget: 'Moderate',
+      },
+    });
+    await newUser.save();
+  }
+});
+
+afterEach(async () => {
+  await Travel.deleteMany({});
 });
 
 describe('Travel Controller Tests', () => {
   it('should create a new travel', async () => {
-    const res = await request(app)
+    const res = await request(app) // Use app directly with supertest
       .post('/api/v1/travels')
       .set('Authorization', `Bearer ${token}`)
       .send({

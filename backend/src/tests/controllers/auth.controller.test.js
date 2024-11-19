@@ -5,6 +5,7 @@ const app = require('../../index');
 const User = require('../../models/user.model');
 
 let mongoServer;
+let server;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -15,9 +16,14 @@ beforeAll(async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+  
+  server = app.listen(process.env.TEST_PORT);
 });
 
 afterAll(async () => {
+  if (server) {
+    server.close();
+  }
   await mongoose.disconnect();
   await mongoServer.stop();
 });

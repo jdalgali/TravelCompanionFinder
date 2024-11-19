@@ -45,23 +45,30 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal server error' });
 });
 
-const PORT = process.env.PORT || 3000;
+// Determine environment-specific variables
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+const PORT = isTestEnvironment ? process.env.TEST_PORT : process.env.PORT || 3000;
+const MONGODB_URI = isTestEnvironment 
+  ? process.env.TEST_MONGODB_URI || 'mongodb://localhost:27017/travel_companion_test'
+  : process.env.MONGODB_URI || 'mongodb://localhost:27017/travel_companion';
 
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    retryWrites: true
-  })
-  .then(() => {
-    app.listen(PORT, () => {
-      logger.info(`Backend is running successfully on port ${PORT}`);
+if (!isTestEnvironment) {
+  mongoose
+    .connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      retryWrites: true
+    })
+    .then(() => {
+      app.listen(PORT, () => {
+        logger.info(`Backend is running successfully on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      logger.error('MongoDB connection error:', err);
+      process.exit(1);
     });
-  })
-  .catch((err) => {
-    logger.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
+}
 
 module.exports = app;
