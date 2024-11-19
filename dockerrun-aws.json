@@ -29,7 +29,7 @@
     },
     {
       "name": "backend",
-      "image": "dalgajan/backend-tca:latest",
+      "image": "dalgajan/backend-tcf:latest",
       "memory": 256,
       "environment": [
         {
@@ -59,7 +59,7 @@
     },
     {
       "name": "frontend",
-      "image": "dalgajan/frontend-tca:latest",
+      "image": "dalgajan/frontend-tcf:latest",
       "environment": [
         {
           "name": "API_URL",

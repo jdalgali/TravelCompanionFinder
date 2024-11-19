@@ -112,13 +112,13 @@ jobs:
           docker build \
             --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
             --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -t ${{ secrets.DOCKER_USERNAME }}/backend-tca:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/backend-tcf:latest \
             ./backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-tca:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/backend-tcf:latest
       - name: Build and push frontend Docker image
         run: |
           docker build \
             --build-arg API_URL=http://backend:3000/api/v1 \
-            -t ${{ secrets.DOCKER_USERNAME }}/frontend-tca:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest \
             ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend-tca:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest
