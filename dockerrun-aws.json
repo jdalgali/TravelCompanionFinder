@@ -29,24 +29,24 @@
     },
     {
       "name": "backend",
-      "image": "dalgajan/backend-tca:${TAG}",
+      "image": "dalgajan/backend-tca:latest",
       "memory": 256,
       "environment": [
         {
           "name": "NODE_ENV",
-          "value": "${NODE_ENV}"
-        },
-        {
-          "name": "MONGODB_URI",
-          "value": "mongodb://mongodb:27017/travel_companion_${NODE_ENV}"
-        },
-        {
-          "name": "JWT_SECRET",
-          "value": "${JWT_SECRET}"
+          "value": "production"
         },
         {
           "name": "PORT",
           "value": "3000"
+        },
+        {
+          "name": "MONGODB_URI",
+          "value": "mongodb://mongodb:27017/travel_companion"
+        },
+        {
+          "name": "JWT_SECRET",
+          "value": "prod-secret-key"
         }
       ],
       "portMappings": [
@@ -59,18 +59,11 @@
     },
     {
       "name": "frontend",
-      "image": "dalgajan/frontend-tca:${TAG}",
-      "memory": 256,
+      "image": "dalgajan/frontend-tca:latest",
       "environment": [
         {
-          "name": "REACT_APP_API_URL",
-          "value": "http://backend:3000"
-        }
-      ],
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80
+          "name": "API_URL",
+          "value": "http://backend:3000/api/v1"
         }
       ],
       "links": ["backend"]

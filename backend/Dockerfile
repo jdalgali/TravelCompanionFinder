@@ -16,11 +16,11 @@ RUN dos2unix /wait-for.sh && chmod +x /wait-for.sh
 
 EXPOSE 3000
 
-# Default environment variables
+# Set default PORT explicitly
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV API_PORT=3000
 ENV MONGODB_URI=mongodb://mongodb:27017/travel_companion
 ENV JWT_SECRET=default-secret-key
 
 # Use wait-for script to wait for MongoDB before starting
-CMD ["/wait-for.sh", "mongodb:27017", "--", "npm", "start"]
+CMD ["/wait-for.sh", "mongodb:27017", "--", "node", "src/index.js"]
