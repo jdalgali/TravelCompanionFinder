@@ -1,4 +1,4 @@
 class Config {
-  static const String apiUrl = String.fromEnvironment('API_URL',
-      defaultValue: 'http://localhost:3000/api/v1');
+  static final String apiUrl =
+      String.fromEnvironment('API_URL', defaultValue: '/api/v1');
 }

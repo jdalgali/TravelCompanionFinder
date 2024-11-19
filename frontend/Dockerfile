@@ -43,7 +43,7 @@ COPY --chown=flutteruser:flutteruser . .
 # Get app dependencies and build for web
 RUN flutter pub get
 # Build with the API URL argument
-ARG API_URL=http://backend:3000/api/v1
+ARG API_URL=/api/v1
 RUN flutter build web --dart-define=API_URL=$API_URL --release
 
 # Stage 2: Serve the app using Nginx
