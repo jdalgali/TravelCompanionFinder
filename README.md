@@ -4,20 +4,32 @@ DES424 Cloud App Development Project - SIIT Thammasat University Bangkok Group 0
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Running Locally](#running-locally)
-    - [Setting Up MongoDB](#setting-up-mongodb)
-    - [Running the Backend](#running-the-backend)
-    - [Running the Frontend](#running-the-frontend)
-  - [Running with Docker Compose](#running-with-docker-compose)
-  - [Rebuilding After Changes](#rebuilding-after-changes)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
+- [TravelCompanionFinder](#travelcompanionfinder)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Technologies Used](#technologies-used)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+  - [Usage](#usage)
+    - [Running Locally](#running-locally)
+      - [Setting Up MongoDB](#setting-up-mongodb)
+      - [Running the Backend](#running-the-backend)
+      - [Running the Frontend](#running-the-frontend)
+    - [Running with Docker Compose](#running-with-docker-compose)
+    - [Rebuilding After Changes](#rebuilding-after-changes)
+      - [Locally](#locally)
+      - [Docker Compose](#docker-compose)
+  - [API Documentation](#api-documentation)
+    - [Authentication Endpoints](#authentication-endpoints)
+    - [Profile Endpoints](#profile-endpoints)
+    - [Travel Endpoints](#travel-endpoints)
+    - [Message Endpoints](#message-endpoints)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Introduction
 
@@ -162,7 +174,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
 3. **Build and start the services using Docker Compose:**
 
     ```sh
-    docker-compose up --build
+    docker compose up --build -d
     ```
 
 4. **Access the application:**
@@ -188,7 +200,7 @@ TravelCompanionFinder is a web application designed to help users find travel co
 2. **Rebuild and restart the services:**
 
     ```sh
-    docker-compose up --build
+    docker compose up --build -d
     ```
 
 ## API Documentation
