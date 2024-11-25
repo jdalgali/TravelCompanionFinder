@@ -23,6 +23,7 @@ class AuthService {
     required String email,
     required String password,
     required String name,
+    required Map<String, dynamic> preferences,
   }) async {
     try {
       final response = await http.post(
@@ -35,6 +36,7 @@ class AuthService {
           'email': email,
           'password': password,
           'name': name,
+          'preferences': preferences,
         }),
       );
 

@@ -68,6 +68,7 @@ class AuthProvider with ChangeNotifier {
     required String email,
     required String password,
     required String name,
+    required Map<String, dynamic> preferences,
   }) async {
     try {
       _isLoading = true;
@@ -78,6 +79,7 @@ class AuthProvider with ChangeNotifier {
         email: email,
         password: password,
         name: name,
+        preferences: preferences,
       );
 
       if (result['success']) {

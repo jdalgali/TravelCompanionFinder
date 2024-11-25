@@ -74,13 +74,20 @@ const register = async (req, res) => {
     }
 
     // Validate preferences
-    const { activityLevel, budget } = preferences;
+    const { activityLevel, budget, travelStyle } = preferences;
     const validActivityLevels = ['Low', 'Medium', 'High'];
     const validBudgets = ['Budget', 'Moderate', 'Luxury'];
+    const validTravelStyles = ['Adventure', 'Cultural', 'Relaxation', 'Food', 'Nature'];
 
     if (!validActivityLevels.includes(activityLevel) || !validBudgets.includes(budget)) {
       return res.status(400).json({
         message: 'Invalid preferences values'
+      });
+    }
+
+    if (!Array.isArray(travelStyle) || !travelStyle.every(style => validTravelStyles.includes(style))) {
+      return res.status(400).json({
+        message: 'Invalid travel style values'
       });
     }
 

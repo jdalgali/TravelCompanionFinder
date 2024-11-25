@@ -17,15 +17,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  String _activityLevel = 'Medium';
+  String _budget = 'Moderate';
+  final List<String> _travelStyle = ['Adventure'];
+
+  final List<String> _activityLevels = ['Low', 'Medium', 'High'];
+  final List<String> _budgetOptions = ['Budget', 'Moderate', 'Luxury'];
+  final List<String> _travelStyleOptions = [
+    'Adventure',
+    'Cultural',
+    'Relaxation',
+    'Food',
+    'Nature'
+  ];
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
 
     final result = await context.read<AuthProvider>().register(
-          email: _emailController.text,
-          password: _passwordController.text,
-          name: _nameController.text,
-        );
+      email: _emailController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+      preferences: {
+        'activityLevel': _activityLevel,
+        'budget': _budget,
+        'travelStyle': _travelStyle,
+      },
+    );
 
     if (!mounted) return;
 
@@ -120,6 +138,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                     return null;
                   },
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  value: _activityLevel,
+                  decoration: const InputDecoration(
+                    labelText: 'Activity Level',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: _activityLevels
+                      .map((level) => DropdownMenuItem(
+                            value: level,
+                            child: Text(level),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => _activityLevel = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  value: _budget,
+                  decoration: const InputDecoration(
+                    labelText: 'Budget',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: _budgetOptions
+                      .map((budget) => DropdownMenuItem(
+                            value: budget,
+                            child: Text(budget),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => _budget = value);
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Text('Travel Style', style: TextStyle(fontSize: 16)),
+                Wrap(
+                  spacing: 8,
+                  children: _travelStyleOptions.map((style) {
+                    return FilterChip(
+                      label: Text(style),
+                      selected: _travelStyle.contains(style),
+                      onSelected: (selected) {
+                        setState(() {
+                          if (selected) {
+                            _travelStyle.add(style);
+                          } else {
+                            _travelStyle.remove(style);
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(height: 24),
                 Consumer<AuthProvider>(
