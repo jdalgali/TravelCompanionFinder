@@ -128,6 +128,8 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 3. **Create a `.env` file** in the `backend` directory with the following content:
 
+**The env files have been pushed to the repo for demonstration purposes only, that should never be done in real project!**
+
     ```env
     MONGODB_URI=mongodb://localhost:27017/travel_companion
     JWT_SECRET=your_secret_key
