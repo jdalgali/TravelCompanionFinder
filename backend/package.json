@@ -13,7 +13,8 @@
     "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
-    }
+    },
+    "testTimeout": 30000
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

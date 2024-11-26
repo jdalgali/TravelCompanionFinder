@@ -25,7 +25,9 @@ afterAll(async () => {
     server.close();
   }
   await mongoose.disconnect();
-  await mongoServer.stop();
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
 });
 
 afterEach(async () => {
@@ -44,7 +46,8 @@ describe('Auth Controller Tests', () => {
           preferences: {
             activityLevel: 'Medium',
             budget: 'Moderate',
-          },
+            travelStyle: ['Cultural', 'Food']
+          }
         });
 
       expect(res.statusCode).toBe(201);

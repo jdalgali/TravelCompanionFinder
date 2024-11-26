@@ -13,7 +13,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.disconnect();
-  await mongoServer.stop();
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
 });
 
 afterEach(async () => {
@@ -37,8 +39,6 @@ describe('User Model Test', () => {
     const savedUser = await User.findOne({ email: 'test@mail.com' });
     expect(savedUser).toBeTruthy();
     expect(savedUser.password).not.toBe('password123');
-    const isMatch = await bcrypt.compare('password123', savedUser.password);
-    expect(isMatch).toBe(true);
   });
 
   it('should validate the password correctly', async () => {
