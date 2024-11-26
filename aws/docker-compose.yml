@@ -9,12 +9,12 @@ services:
       - backend
 
   frontend:
-    image: dalgajan/frontend-tcf:latest
+    image: orpit/frontend-tcf:latest
     expose:
       - "80"
 
   backend:
-    image: dalgajan/backend-tcf:latest
+    image: orpit/backend-tcf:latest
     expose:
       - "3000"
     environment:
