@@ -1,414 +1,810 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.1.1 (Python 3.9.19 on darwin)" generated="2024-11-26T17:26:00.535643" rpa="false" schemaversion="5">
-<suite id="s1" name="Frontend Tests" source="/Users/jandalgali/Developer/TravelCompanionFinder/robot/frontend_tests.robot">
-<test id="s1-t1" name="Verify Home Page Loads" line="10">
+<robot generator="Robot 7.1.1 (Python 3.9.19 on darwin)" generated="2024-11-26T21:38:35.997542" rpa="false" schemaversion="5">
+<suite id="s1" name="Robot" source="/Users/jandalgali/Developer/orpit/TravelCompanionFinder/robot">
+<suite id="s1-s1" name="Backend Tests" source="/Users/jandalgali/Developer/orpit/TravelCompanionFinder/robot/backend_tests.robot">
+<test id="s1-s1-t1" name="Send Message Test" line="25">
+<kw name="Setup" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.110201" level="INFO">Creating Session using : alias=mysession, url=http://localhost:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2024-11-26T21:38:36.110110" elapsed="0.000223"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.110590" level="INFO">${payload} = {'email': 'admin@mail.com', 'password': 'admin1234'}</msg>
+<var>${payload}</var>
+<arg>email=${EMAIL}</arg>
+<arg>password=${PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.110417" elapsed="0.000185"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.224677" level="INFO">POST Request : url=http://localhost:3000/api/v1/auth/login 
+ path_url=/api/v1/auth/login 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '52', 'Content-Type': 'application/json'} 
+ body=b'{"email": "admin@mail.com", "password": "admin1234"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.224752" level="INFO">POST Response : url=http://localhost:3000/api/v1/auth/login 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '274', 'ETag': 'W/"112-/cfwniLWhu62uwKAyTx2KX37Tgc"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}} 
+ </msg>
+<msg time="2024-11-26T21:38:36.224850" level="INFO">${auth_response} = &lt;Response [200]&gt;</msg>
+<var>${auth_response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/auth/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.110664" elapsed="0.114200"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.225285" level="INFO">200</msg>
+<arg>${auth_response.status_code}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.224988" elapsed="0.000321"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.225581" level="INFO">{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}}</msg>
+<arg>${auth_response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.225367" elapsed="0.000237"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.225860" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${auth_response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.225659" elapsed="0.000233"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2024-11-26T21:38:36.226190" level="INFO">${auth_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<var>${auth_token}</var>
+<arg>${auth_response.json()}</arg>
+<arg>token</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.225947" elapsed="0.000255"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.226375" level="INFO">${AUTH_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<arg>${AUTH_TOKEN}</arg>
+<arg>${auth_token}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.226262" elapsed="0.000133"/>
+</kw>
+<doc>Perform login and extract auth token</doc>
+<status status="PASS" start="2024-11-26T21:38:36.109731" elapsed="0.116701"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.226671" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${AUTH_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.226535" elapsed="0.000149"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.226875" level="INFO">${data} = {'receiver': '60d0fe4f5311236168a109ca', 'content': 'Hello!'}</msg>
+<var>${data}</var>
+<arg>receiver=${RECEIVER_ID}</arg>
+<arg>content=Hello!</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.226763" elapsed="0.000123"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.234072" level="INFO">POST Request : url=http://localhost:3000/api/v1/messages 
+ path_url=/api/v1/messages 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s', 'Content-Type': 'application/json', 'Content-Length': '61'} 
+ body=b'{"receiver": "60d0fe4f5311236168a109ca", "content": "Hello!"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.234123" level="INFO">POST Response : url=http://localhost:3000/api/v1/messages 
+ status=201, reason=Created 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '174', 'ETag': 'W/"ae-4LrqDGyg+aMBJbYOw4ETMPUmgL4"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"sender":"6745dbb588ae9f00dd4df5e7","receiver":"60d0fe4f5311236168a109ca","content":"Hello!","_id":"6745dd6ce289f87da9c6d59f","timestamp":"2024-11-26T14:38:36.231Z","__v":0} 
+ </msg>
+<msg time="2024-11-26T21:38:36.234195" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/messages</arg>
+<arg>headers=${headers}</arg>
+<arg>json=${data}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.226955" elapsed="0.007255"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.234797" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.234403" elapsed="0.001415"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.236352" level="INFO">{'sender': '6745dbb588ae9f00dd4df5e7', 'receiver': '60d0fe4f5311236168a109ca', 'content': 'Hello!', '_id': '6745dd6ce289f87da9c6d59f', 'timestamp': '2024-11-26T14:38:36.231Z', '__v': 0}</msg>
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.235959" elapsed="0.000430"/>
+</kw>
+<doc>Test sending a message</doc>
+<status status="PASS" start="2024-11-26T21:38:36.109346" elapsed="0.127152"/>
+</test>
+<test id="s1-s1-t2" name="Get Messages Test" line="34">
+<kw name="Setup" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.237141" level="INFO">Creating Session using : alias=mysession, url=http://localhost:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2024-11-26T21:38:36.237029" elapsed="0.000222"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.237461" level="INFO">${payload} = {'email': 'admin@mail.com', 'password': 'admin1234'}</msg>
+<var>${payload}</var>
+<arg>email=${EMAIL}</arg>
+<arg>password=${PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.237316" elapsed="0.000158"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.315328" level="INFO">POST Request : url=http://localhost:3000/api/v1/auth/login 
+ path_url=/api/v1/auth/login 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '52', 'Content-Type': 'application/json'} 
+ body=b'{"email": "admin@mail.com", "password": "admin1234"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.315389" level="INFO">POST Response : url=http://localhost:3000/api/v1/auth/login 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '274', 'ETag': 'W/"112-/cfwniLWhu62uwKAyTx2KX37Tgc"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}} 
+ </msg>
+<msg time="2024-11-26T21:38:36.315475" level="INFO">${auth_response} = &lt;Response [200]&gt;</msg>
+<var>${auth_response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/auth/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.237530" elapsed="0.077960"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.315882" level="INFO">200</msg>
+<arg>${auth_response.status_code}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.315601" elapsed="0.000304"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.316176" level="INFO">{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}}</msg>
+<arg>${auth_response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.315961" elapsed="0.000238"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.316469" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${auth_response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.316254" elapsed="0.000247"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2024-11-26T21:38:36.316800" level="INFO">${auth_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<var>${auth_token}</var>
+<arg>${auth_response.json()}</arg>
+<arg>token</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.316558" elapsed="0.000255"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.316990" level="INFO">${AUTH_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<arg>${AUTH_TOKEN}</arg>
+<arg>${auth_token}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.316877" elapsed="0.000132"/>
+</kw>
+<doc>Perform login and extract auth token</doc>
+<status status="PASS" start="2024-11-26T21:38:36.236881" elapsed="0.080164"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.317303" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${AUTH_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.317154" elapsed="0.000161"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.329563" level="INFO">GET Request : url=http://localhost:3000/api/v1/messages 
+ path_url=/api/v1/messages 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s'} 
+ body=None 
+ </msg>
+<msg time="2024-11-26T21:38:36.329630" level="INFO">GET Response : url=http://localhost:3000/api/v1/messages 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '544', 'ETag': 'W/"220-r1PLm7KIow2zm3UJ6sKuzjmHOlI"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body=[{"_id":"6745dd6ce289f87da9c6d59f","sender":{"_id":"6745dbb588ae9f00dd4df5e7","name":"Admin User"},"receiver":null,"content":"Hello!","timestamp":"2024-11-26T14:38:36.231Z","__v":0},{"_id":"6745dc27e289f87da9c6d593","sender":{"_id":"6745dbb588ae9f00dd4df5e7","name":"Admin User"},"receiver":null,"content":"Hello!","timestamp":"2024-11-26T14:33:11.354Z","__v":0},{"_id":"6745dc15e289f87da9c6d587","sender":{"_id":"6745dbb588ae9f00dd4df5e7","name":"Admin User"},"receiver":null,"content":"Hello!","timestamp":"2024-11-26T14:32:53.279Z","__v":0}] 
+ </msg>
+<msg time="2024-11-26T21:38:36.329721" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/messages</arg>
+<arg>headers=${headers}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.317384" elapsed="0.012352"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.330282" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.329957" elapsed="0.000362"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.330643" level="INFO">[{'_id': '6745dd6ce289f87da9c6d59f', 'sender': {'_id': '6745dbb588ae9f00dd4df5e7', 'name': 'Admin User'}, 'receiver': None, 'content': 'Hello!', 'timestamp': '2024-11-26T14:38:36.231Z', '__v': 0}, {'_id': '6745dc27e289f87da9c6d593', 'sender': {'_id': '6745dbb588ae9f00dd4df5e7', 'name': 'Admin User'}, 'receiver': None, 'content': 'Hello!', 'timestamp': '2024-11-26T14:33:11.354Z', '__v': 0}, {'_id': '6745dc15e289f87da9c6d587', 'sender': {'_id': '6745dbb588ae9f00dd4df5e7', 'name': 'Admin User'}, 'receiver': None, 'content': 'Hello!', 'timestamp': '2024-11-26T14:32:53.279Z', '__v': 0}]</msg>
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.330398" elapsed="0.000271"/>
+</kw>
+<doc>Test fetching messages</doc>
+<status status="PASS" start="2024-11-26T21:38:36.236632" elapsed="0.094124"/>
+</test>
+<test id="s1-s1-t3" name="Health Check Test" line="42">
+<kw name="GET" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.334458" level="INFO">GET Request : url=http://localhost:3000/api/v1/health 
+ path_url=/api/v1/health 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2024-11-26T21:38:36.334508" level="INFO">GET Response : url=http://localhost:3000/api/v1/health 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '15', 'ETag': 'W/"f-RQ8OySFd+KR+AvtJ7qImjtT0D/0"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"status":"UP"} 
+ </msg>
+<msg time="2024-11-26T21:38:36.334578" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>${BASE_URL}/api/v1/health</arg>
+<doc>Sends a GET request.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.331048" elapsed="0.003544"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.335103" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.334716" elapsed="0.000435"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.335555" level="INFO">{'status': 'UP'}</msg>
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.335285" elapsed="0.000296"/>
+</kw>
+<doc>Test the health check endpoint</doc>
+<status status="PASS" start="2024-11-26T21:38:36.330870" elapsed="0.004794"/>
+</test>
+<test id="s1-s1-t4" name="Invalid Login Test" line="48">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.336023" level="INFO">Creating Session using : alias=mysession, url=http://localhost:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2024-11-26T21:38:36.335944" elapsed="0.000162"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.336286" level="INFO">${payload} = {'email': 'invalid@mail.com', 'password': 'wrongpassword'}</msg>
+<var>${payload}</var>
+<arg>email=invalid@mail.com</arg>
+<arg>password=wrongpassword</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.336184" elapsed="0.000114"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.343641" level="INFO">POST Request : url=http://localhost:3000/api/v1/auth/login 
+ path_url=/api/v1/auth/login 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '58', 'Content-Type': 'application/json'} 
+ body=b'{"email": "invalid@mail.com", "password": "wrongpassword"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.343698" level="INFO">POST Response : url=http://localhost:3000/api/v1/auth/login 
+ status=401, reason=Unauthorized 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '33', 'ETag': 'W/"21-dBEoW0UmTF+EGUMaprEp9/8zNNA"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"message":"Invalid credentials"} 
+ </msg>
+<msg time="2024-11-26T21:38:36.343790" level="INFO">${response} = &lt;Response [401]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/auth/login</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=401</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.336369" elapsed="0.007436"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.345085" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.343945" elapsed="0.001175"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.345455" level="INFO">{'message': 'Invalid credentials'}</msg>
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.345208" elapsed="0.000270"/>
+</kw>
+<doc>Test login with invalid credentials</doc>
+<status status="PASS" start="2024-11-26T21:38:36.335763" elapsed="0.009800"/>
+</test>
+<test id="s1-s1-t5" name="Missing Fields Test" line="56">
+<kw name="Setup" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.346252" level="INFO">Creating Session using : alias=mysession, url=http://localhost:3000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>mysession</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2024-11-26T21:38:36.346168" elapsed="0.000185"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.346588" level="INFO">${payload} = {'email': 'admin@mail.com', 'password': 'admin1234'}</msg>
+<var>${payload}</var>
+<arg>email=${EMAIL}</arg>
+<arg>password=${PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.346429" elapsed="0.000173"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.422896" level="INFO">POST Request : url=http://localhost:3000/api/v1/auth/login 
+ path_url=/api/v1/auth/login 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '52', 'Content-Type': 'application/json'} 
+ body=b'{"email": "admin@mail.com", "password": "admin1234"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.422960" level="INFO">POST Response : url=http://localhost:3000/api/v1/auth/login 
+ status=200, reason=OK 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '274', 'ETag': 'W/"112-/cfwniLWhu62uwKAyTx2KX37Tgc"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}} 
+ </msg>
+<msg time="2024-11-26T21:38:36.423114" level="INFO">${auth_response} = &lt;Response [200]&gt;</msg>
+<var>${auth_response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/auth/login</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.346661" elapsed="0.076467"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.423534" level="INFO">200</msg>
+<arg>${auth_response.status_code}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.423240" elapsed="0.000318"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.423834" level="INFO">{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s","user":{"id":"6745dbb588ae9f00dd4df5e7","email":"admin@mail.com","name":"Admin User"}}</msg>
+<arg>${auth_response.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.423616" elapsed="0.000241"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.424118" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${auth_response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.423911" elapsed="0.000238"/>
+</kw>
+<kw name="Get From Dictionary" owner="Collections">
+<msg time="2024-11-26T21:38:36.424441" level="INFO">${auth_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<var>${auth_token}</var>
+<arg>${auth_response.json()}</arg>
+<arg>token</arg>
+<doc>Returns a value from the given ``dictionary`` based on the given ``key``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.424205" elapsed="0.000249"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.424626" level="INFO">${AUTH_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s</msg>
+<arg>${AUTH_TOKEN}</arg>
+<arg>${auth_token}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.424515" elapsed="0.000131"/>
+</kw>
+<doc>Perform login and extract auth token</doc>
+<status status="PASS" start="2024-11-26T21:38:36.346021" elapsed="0.078661"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.424994" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${AUTH_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.424829" elapsed="0.000180"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.425198" level="INFO">${data} = {'content': 'Hello!'}</msg>
+<var>${data}</var>
+<arg>content=Hello!</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.425092" elapsed="0.000118"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2024-11-26T21:38:36.429836" level="INFO">POST Request : url=http://localhost:3000/api/v1/messages 
+ path_url=/api/v1/messages 
+ headers={'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzQ1ZGJiNTg4YWU5ZjAwZGQ0ZGY1ZTciLCJpYXQiOjE3MzI2MzE5MTYsImV4cCI6MTczMjcxODMxNn0.wsRSCdUMp3zBMlp6YNtHQ5OOhl0MTMkwT45zUNFGl5s', 'Content-Type': 'application/json', 'Content-Length': '21'} 
+ body=b'{"content": "Hello!"}' 
+ </msg>
+<msg time="2024-11-26T21:38:36.429886" level="INFO">POST Response : url=http://localhost:3000/api/v1/messages 
+ status=400, reason=Bad Request 
+ headers={'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '47', 'ETag': 'W/"2f-DJM0IbNBXAA4TA2tpBxx8cjyO2Y"', 'Date': 'Tue, 26 Nov 2024 14:38:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"message":"Receiver and content are required"} 
+ </msg>
+<msg time="2024-11-26T21:38:36.429953" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>mysession</arg>
+<arg>/api/v1/messages</arg>
+<arg>headers=${headers}</arg>
+<arg>json=${data}</arg>
+<arg>expected_status=400</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.425285" elapsed="0.004682"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.430522" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response.status_code}</arg>
+<arg>400</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.430088" elapsed="0.000480"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-11-26T21:38:36.430947" level="INFO">{'message': 'Receiver and content are required'}</msg>
+<arg>${response.json()}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-11-26T21:38:36.430694" elapsed="0.000277"/>
+</kw>
+<doc>Test sending a message with missing fields</doc>
+<status status="PASS" start="2024-11-26T21:38:36.345755" elapsed="0.085296"/>
+</test>
+<status status="PASS" start="2024-11-26T21:38:36.009101" elapsed="0.422179"/>
+</suite>
+<suite id="s1-s2" name="Frontend Tests" source="/Users/jandalgali/Developer/orpit/TravelCompanionFinder/robot/frontend_tests.robot">
+<test id="s1-s2-t1" name="Verify Home Page Loads" line="10">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:00.644385" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<msg time="2024-11-26T21:38:36.517109" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
 <arg>${BASE_URL}</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:00.644209" elapsed="1.005343"/>
+<status status="PASS" start="2024-11-26T21:38:36.516907" elapsed="1.133254"/>
 </kw>
 <kw name="Title Should Be" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:01.653077" level="INFO">Page title is 'Travel Companion Finder'.</msg>
+<msg time="2024-11-26T21:38:37.657709" level="INFO">Page title is 'Travel Companion Finder'.</msg>
 <arg>Travel Companion Finder</arg>
 <doc>Verifies that the current page title equals ``title``.</doc>
-<status status="PASS" start="2024-11-26T17:26:01.649983" elapsed="0.003163"/>
+<status status="PASS" start="2024-11-26T21:38:37.650744" elapsed="0.007049"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-11-26T17:26:01.653412" elapsed="0.075472"/>
+<status status="PASS" start="2024-11-26T21:38:37.658092" elapsed="0.069985"/>
 </kw>
-<status status="PASS" start="2024-11-26T17:26:00.643545" elapsed="1.085468"/>
+<status status="PASS" start="2024-11-26T21:38:36.516459" elapsed="1.211788"/>
 </test>
-<test id="s1-t2" name="Login Functionality Test" line="15">
+<test id="s1-s2-t2" name="Login Functionality Test" line="15">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:01.729675" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<msg time="2024-11-26T21:38:37.728997" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
 <arg>${BASE_URL}</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:01.729505" elapsed="0.698146"/>
+<status status="PASS" start="2024-11-26T21:38:37.728803" elapsed="0.681007"/>
 </kw>
 <kw name="Login To Application">
 <kw name="Go To" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:02.429570" level="INFO">Opening url 'http://localhost'</msg>
+<msg time="2024-11-26T21:38:38.410862" level="INFO">Opening url 'http://localhost'</msg>
 <arg>${BASE_URL}</arg>
 <doc>Navigates the current browser window to the provided ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:02.429448" elapsed="0.009145"/>
+<status status="PASS" start="2024-11-26T21:38:38.410759" elapsed="0.007958"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:12.875809" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-5.png"&gt;&lt;img src="selenium-screenshot-5.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg time="2024-11-26T17:26:12.875955" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
+<msg time="2024-11-26T21:38:48.591711" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-6.png"&gt;&lt;img src="selenium-screenshot-6.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-11-26T21:38:48.591845" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
 <arg>xpath=//button[text()='Login']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="FAIL" start="2024-11-26T17:26:02.438754" elapsed="10.438513">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+<status status="FAIL" start="2024-11-26T21:38:38.418979" elapsed="10.174500">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Login']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.877442" elapsed="0.000025"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.593628" elapsed="0.000023"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='email']</arg>
 <arg>${email}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.877533" elapsed="0.000016"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.593713" elapsed="0.000014"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='password']</arg>
 <arg>${password}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.877603" elapsed="0.000013"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.593778" elapsed="0.000012"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Submit']</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.877668" elapsed="0.000014"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.593839" elapsed="0.000013"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h1[text()='Welcome']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.877733" elapsed="0.000015"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.593902" elapsed="0.000012"/>
 </kw>
 <arg>${EMAIL}</arg>
 <arg>${PASSWORD}</arg>
-<status status="FAIL" start="2024-11-26T17:26:02.429040" elapsed="10.448797">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+<status status="FAIL" start="2024-11-26T21:38:38.410406" elapsed="10.183580">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Element Should Be Visible" owner="SeleniumLibrary">
 <arg>xpath=//h1[text()='Welcome']</arg>
 <doc>Verifies that the element identified by ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:12.878015" elapsed="0.000027"/>
+<status status="NOT RUN" start="2024-11-26T21:38:48.594089" elapsed="0.000016"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-11-26T17:26:12.878209" elapsed="0.088233"/>
+<status status="PASS" start="2024-11-26T21:38:48.594255" elapsed="0.084356"/>
 </kw>
-<status status="FAIL" start="2024-11-26T17:26:01.729264" elapsed="11.237320">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+<status status="FAIL" start="2024-11-26T21:38:37.728507" elapsed="10.950220">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </test>
-<test id="s1-t3" name="Navigate to Travel List" line="21">
+<test id="s1-s2-t3" name="Navigate to Travel List" line="21">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:12.967533" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<msg time="2024-11-26T21:38:48.679357" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
 <arg>${BASE_URL}</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:12.967347" elapsed="0.698215"/>
+<status status="PASS" start="2024-11-26T21:38:48.679209" elapsed="0.667326"/>
 </kw>
 <kw name="Login To Application">
 <kw name="Go To" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:13.666390" level="INFO">Opening url 'http://localhost'</msg>
+<msg time="2024-11-26T21:38:49.348040" level="INFO">Opening url 'http://localhost'</msg>
 <arg>${BASE_URL}</arg>
 <doc>Navigates the current browser window to the provided ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:13.666296" elapsed="0.011899"/>
+<status status="PASS" start="2024-11-26T21:38:49.347859" elapsed="0.009168"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:22.969063" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</msg>
-<msg time="2024-11-26T17:26:22.969411" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</msg>
+<msg time="2024-11-26T21:38:59.607011" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-7.png"&gt;&lt;img src="selenium-screenshot-7.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-11-26T21:38:59.607130" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
 <arg>xpath=//button[text()='Login']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="FAIL" start="2024-11-26T17:26:13.678352" elapsed="9.292895">NoSuchWindowException: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</status>
+<status status="FAIL" start="2024-11-26T21:38:49.357182" elapsed="10.250089">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Login']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971423" elapsed="0.000025"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607413" elapsed="0.000022"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='email']</arg>
 <arg>${email}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971521" elapsed="0.000018"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607499" elapsed="0.000016"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='password']</arg>
 <arg>${password}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971604" elapsed="0.000016"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607568" elapsed="0.000014"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Submit']</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971677" elapsed="0.000016"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607633" elapsed="0.000013"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h1[text()='Welcome']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971750" elapsed="0.000015"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607696" elapsed="0.000012"/>
 </kw>
 <arg>${EMAIL}</arg>
 <arg>${PASSWORD}</arg>
-<status status="FAIL" start="2024-11-26T17:26:13.665994" elapsed="9.305861">NoSuchWindowException: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</status>
+<status status="FAIL" start="2024-11-26T21:38:49.347410" elapsed="10.260359">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
 <arg>xpath=//a[@href='/travel-list']</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.971960" elapsed="0.000016"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607867" elapsed="0.000015"/>
 </kw>
 <kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
 <arg>xpath=//h1[text()='Travel List']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` appears on the current page.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:22.972055" elapsed="0.000017"/>
+<status status="NOT RUN" start="2024-11-26T21:38:59.607948" elapsed="0.000014"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-11-26T17:26:22.972248" elapsed="0.084825"/>
+<status status="PASS" start="2024-11-26T21:38:59.608096" elapsed="0.089145"/>
 </kw>
-<status status="FAIL" start="2024-11-26T17:26:12.966953" elapsed="10.090237">NoSuchWindowException: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</status>
+<status status="FAIL" start="2024-11-26T21:38:48.678947" elapsed="11.018449">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </test>
-<test id="s1-t4" name="Create New Travel Entry" line="28">
+<test id="s1-s2-t4" name="Create New Travel Entry" line="28">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:23.058081" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<msg time="2024-11-26T21:38:59.698025" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
 <arg>${BASE_URL}</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:23.057852" elapsed="0.652649"/>
+<status status="PASS" start="2024-11-26T21:38:59.697869" elapsed="0.651094"/>
 </kw>
 <kw name="Login To Application">
 <kw name="Go To" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:23.711367" level="INFO">Opening url 'http://localhost'</msg>
+<msg time="2024-11-26T21:39:00.350039" level="INFO">Opening url 'http://localhost'</msg>
 <arg>${BASE_URL}</arg>
 <doc>Navigates the current browser window to the provided ``url``.</doc>
-<status status="PASS" start="2024-11-26T17:26:23.711262" elapsed="0.024880"/>
+<status status="PASS" start="2024-11-26T21:39:00.349931" elapsed="0.014199"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<msg time="2024-11-26T17:26:26.261500" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f15910&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.267156" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e130&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.269873" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e0a0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.272565" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=57949): Max retries exceeded with url: /session/b2f99aa79378f88b83ec38a88945d395/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102def220&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<msg time="2024-11-26T21:39:10.520559" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-8.png"&gt;&lt;img src="selenium-screenshot-8.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-11-26T21:39:10.521213" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
 <arg>xpath=//button[text()='Login']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="FAIL" start="2024-11-26T17:26:23.736283" elapsed="2.536749">Execution terminated by signal</status>
+<status status="FAIL" start="2024-11-26T21:39:00.364320" elapsed="10.157021">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Login']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.274871" elapsed="0.000156"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521484" elapsed="0.000022"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='email']</arg>
 <arg>${email}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.275298" elapsed="0.000043"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521570" elapsed="0.000016"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='password']</arg>
 <arg>${password}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.275450" elapsed="0.000023"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521642" elapsed="0.000013"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Submit']</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.275560" elapsed="0.000022"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521707" elapsed="0.000013"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h1[text()='Welcome']</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.275677" elapsed="0.000023"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521772" elapsed="0.000013"/>
 </kw>
 <arg>${EMAIL}</arg>
 <arg>${PASSWORD}</arg>
-<status status="FAIL" start="2024-11-26T17:26:23.710919" elapsed="2.565045">Execution terminated by signal</status>
+<status status="FAIL" start="2024-11-26T21:39:00.349550" elapsed="10.172299">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Create New Travel']</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.276158" elapsed="0.000023"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.521949" elapsed="0.000015"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//input[@name='destination']</arg>
 <arg>Paris</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.276282" elapsed="0.000083"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.522061" elapsed="0.000068"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>xpath=//textarea[@name='description']</arg>
 <arg>Trip to Paris in Spring</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.278367" elapsed="0.000069"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.522283" elapsed="0.000019"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//button[text()='Save']</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.279323" elapsed="0.000373"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.522380" elapsed="0.000015"/>
 </kw>
 <kw name="Element Should Be Visible" owner="SeleniumLibrary">
 <arg>xpath=//div[text()='Travel entry created successfully']</arg>
 <doc>Verifies that the element identified by ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-11-26T17:26:26.280495" elapsed="0.000348"/>
+<status status="NOT RUN" start="2024-11-26T21:39:10.522467" elapsed="0.000014"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
-<msg time="2024-11-26T17:26:26.283115" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ebb0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
-<msg time="2024-11-26T17:26:26.284129" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ecd0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
-<msg time="2024-11-26T17:26:26.285341" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102dfe370&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-11-26T17:26:26.281609" elapsed="0.005459"/>
+<status status="PASS" start="2024-11-26T21:39:10.522637" elapsed="0.083207"/>
 </kw>
-<status status="FAIL" start="2024-11-26T17:26:23.057537" elapsed="3.229648">Execution terminated by signal</status>
+<status status="FAIL" start="2024-11-26T21:38:59.697631" elapsed="10.908331">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </test>
-<test id="s1-t5" name="Logout Functionality Test" line="38">
-<tag>robot:exit</tag>
-<status status="FAIL" start="2024-11-26T17:26:26.287940" elapsed="0.000711">Test execution stopped due to a fatal error.</status>
+<test id="s1-s2-t5" name="Logout Functionality Test" line="38">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-11-26T21:39:10.606554" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<arg>${BASE_URL}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-11-26T21:39:10.606405" elapsed="0.659756"/>
+</kw>
+<kw name="Login To Application">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2024-11-26T21:39:11.267088" level="INFO">Opening url 'http://localhost'</msg>
+<arg>${BASE_URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2024-11-26T21:39:11.266986" elapsed="0.013071"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2024-11-26T21:39:21.605538" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-9.png"&gt;&lt;img src="selenium-screenshot-9.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-11-26T21:39:21.605666" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
+<arg>xpath=//button[text()='Login']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2024-11-26T21:39:11.280210" elapsed="10.325584">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.605942" elapsed="0.000021"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='email']</arg>
+<arg>${email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606025" elapsed="0.000015"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606095" elapsed="0.000013"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606158" elapsed="0.000013"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Welcome']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606219" elapsed="0.000015"/>
+</kw>
+<arg>${EMAIL}</arg>
+<arg>${PASSWORD}</arg>
+<status status="FAIL" start="2024-11-26T21:39:11.266657" elapsed="10.339640">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Logout']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606394" elapsed="0.000015"/>
+</kw>
+<kw name="Element Should Be Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Login']</arg>
+<doc>Verifies that the element identified by ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T21:39:21.606477" elapsed="0.000013"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-11-26T21:39:21.606613" elapsed="0.080880"/>
+</kw>
+<status status="FAIL" start="2024-11-26T21:39:10.606170" elapsed="11.081450">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
 </test>
-<status status="FAIL" start="2024-11-26T17:26:00.536343" elapsed="25.752843"/>
+<status status="FAIL" start="2024-11-26T21:38:36.431505" elapsed="45.256437"/>
+</suite>
+<status status="FAIL" start="2024-11-26T21:38:35.998499" elapsed="45.689834"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="4" skip="0">All Tests</stat>
+<stat pass="6" fail="4" skip="0">All Tests</stat>
 </total>
 <tag>
-<stat pass="1" fail="3" skip="0" info="combined" combined="NOT robot:exit">NOT robot:exit</stat>
 </tag>
 <suite>
-<stat pass="1" fail="4" skip="0" id="s1" name="Frontend Tests">Frontend Tests</stat>
+<stat pass="6" fail="4" skip="0" id="s1" name="Robot">Robot</stat>
+<stat pass="5" fail="0" skip="0" id="s1-s1" name="Backend Tests">Robot.Backend Tests</stat>
+<stat pass="1" fail="4" skip="0" id="s1-s2" name="Frontend Tests">Robot.Frontend Tests</stat>
 </suite>
 </statistics>
 <errors>
-<msg time="2024-11-26T17:26:22.969063" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=131.0.6778.86)
-Stacktrace:
-0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
-1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
-2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
-3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
-4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
-5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
-6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
-7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
-8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
-9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
-10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
-11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
-12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
-13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
-14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
-15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
-16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
-17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
-</msg>
-<msg time="2024-11-26T17:26:26.261500" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f15910&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.267156" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e130&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.269873" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e0a0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
-<msg time="2024-11-26T17:26:26.272565" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=57949): Max retries exceeded with url: /session/b2f99aa79378f88b83ec38a88945d395/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102def220&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
-<msg time="2024-11-26T17:26:26.283115" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ebb0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
-<msg time="2024-11-26T17:26:26.284129" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ecd0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
-<msg time="2024-11-26T17:26:26.285341" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102dfe370&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
 </errors>
 </robot>
