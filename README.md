@@ -15,19 +15,16 @@ DES424 Cloud App Development Project - SIIT Thammasat University Bangkok Group 0
     - [Prerequisites](#prerequisites)
     - [Steps](#steps)
   - [Usage](#usage)
-    - [Running Locally](#running-locally)
-      - [Setting Up MongoDB](#setting-up-mongodb)
-      - [Running the Backend](#running-the-backend)
-      - [Running the Frontend](#running-the-frontend)
     - [Running with Docker Compose](#running-with-docker-compose)
     - [Rebuilding After Changes](#rebuilding-after-changes)
-      - [Locally](#locally)
       - [Docker Compose](#docker-compose)
   - [API Documentation](#api-documentation)
     - [Authentication Endpoints](#authentication-endpoints)
     - [Profile Endpoints](#profile-endpoints)
     - [Travel Endpoints](#travel-endpoints)
     - [Message Endpoints](#message-endpoints)
+  - [Robot Tests](#robot-tests)
+    - [Running Robot Tests](#running-robot-tests)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -67,15 +64,8 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 ### Prerequisites
 
-- [Flutter](https://docs.flutter.dev/get-started/install) (≥ 3.10.0)
-- [Node.js](https://nodejs.org/) (≥ 18.x)
-- [MongoDB](https://www.mongodb.com/try/download/community) (for local development)
-- [Docker](https://www.docker.com/products/docker-desktop) (optional, for Docker Compose setup)
-- [Docker Compose](https://docs.docker.com/compose/install/) (optional, for Docker Compose setup)
-- [Android Studio](https://developer.android.com/studio)
-- [VS Code](https://code.visualstudio.com/)
-- [Chrome](https://www.google.com/chrome/)
-- [Android Toolchain](https://developer.android.com/studio/command-line)
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Steps
 
@@ -86,82 +76,18 @@ TravelCompanionFinder is a web application designed to help users find travel co
     cd TravelCompanionFinder
     ```
 
-2. **Install Flutter dependencies:**
+2. **Build and start the services using Docker Compose:**
 
     ```sh
-    flutter pub get
+    docker compose up --build -d
     ```
 
-3. **Verify Flutter installation:**
-
-    ```sh
-    flutter doctor
-    ```
+3. **Access the application:**
+    - Frontend: [http://localhost](http://localhost)
+    - Backend: [http://localhost:3000](http://localhost:3000)
+    - Mongo Express: [http://localhost:8081](http://localhost:8081)
 
 ## Usage
-
-### Running Locally
-
-#### Setting Up MongoDB
-
-1. **Download and install MongoDB** from the [official website](https://www.mongodb.com/try/download/community).
-
-2. **Start the MongoDB server:**
-
-    ```sh
-    mongod --dbpath <path_to_your_db_directory>
-    ```
-
-#### Running the Backend
-
-1. **Navigate to the `backend` directory:**
-
-    ```sh
-    cd backend
-    ```
-
-2. **Install backend dependencies:**
-
-    ```sh
-    npm install
-    ```
-
-3. **Create a `.env` file** in the `backend` directory with the following content:
-
-**The env files have been pushed to the repo for demonstration purposes only, that should never be done in real project!**
-
-    ```env
-    MONGODB_URI=mongodb://localhost:27017/travel_companion
-    JWT_SECRET=your_secret_key
-    NODE_ENV=development
-    PORT=3000
-    ```
-
-4. **Start the backend server:**
-
-    ```sh
-    npm run dev
-    ```
-
-#### Running the Frontend
-
-1. **Navigate to the `frontend` directory:**
-
-    ```sh
-    cd frontend
-    ```
-
-2. **Install frontend dependencies:**
-
-    ```sh
-    flutter pub get
-    ```
-
-3. **Run the frontend application:**
-
-    ```sh
-    flutter run
-    ```
 
 ### Running with Docker Compose
 
@@ -185,16 +111,6 @@ TravelCompanionFinder is a web application designed to help users find travel co
     - Mongo Express: [http://localhost:8081](http://localhost:8081)
 
 ### Rebuilding After Changes
-
-#### Locally
-
-1. **Make your changes** to the code.
-2. **Restart the backend or frontend server** as needed:
-
-    ```sh
-    npm run dev  # For backend
-    flutter run  # For frontend
-    ```
 
 #### Docker Compose
 
@@ -229,6 +145,24 @@ TravelCompanionFinder is a web application designed to help users find travel co
 
 - **GET** `/api/v1/messages` - Get user messages
 - **POST** `/api/v1/messages` - Send new message
+
+## Robot Tests
+
+To run the Robot Framework tests, ensure that the local development environment is running with Docker Compose as described in the [Running with Docker Compose](#running-with-docker-compose) section.
+
+### Running Robot Tests
+
+1. **Navigate to the `robot` directory:**
+
+    ```sh
+    cd robot
+    ```
+
+2. **Run the tests:**
+
+    ```sh
+    robot .
+    ```
 
 ## Contributing
 
