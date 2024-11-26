@@ -24,6 +24,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Health check endpoint
+app.get('/api/v1/health', (req, res) => {
+  res.status(200).json({ status: 'UP' });
+});
+
 // Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/travels', travelRoutes);

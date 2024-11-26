@@ -23,6 +23,11 @@ services:
       - JWT_SECRET=your-secret-key
     depends_on:
       - mongodb
+    command: >
+      sh -c "
+      /wait-for.sh mongodb:27017 -- node insertTestData.js &&
+      node src/index.js
+      "
 
   mongodb:
     image: mongo:latest

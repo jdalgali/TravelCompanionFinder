@@ -1,16 +1,55 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Travel = require('./src/models/travel.model');
-require('dotenv').config();
+const User = require('./src/models/user.model');
+
+// Load environment variables based on NODE_ENV
+const env = process.env.NODE_ENV || 'development';
+const envFile = `.env.${env}`;
+require('dotenv').config({ path: envFile });
 
 const insertTestData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    const mongoUri = process.env.MONGODB_URI;
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI is not defined in the environment variables');
+    }
+
+    console.log(`Connecting to MongoDB at ${mongoUri}`);
+    await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    // Clear existing travel data
+    // Clear existing data
     await Travel.deleteMany({});
+    await User.deleteMany({});
+
+    // Create test users
+    const adminUser = new User({
+      email: 'admin@mail.com',
+      password: 'admin1234',
+      name: 'Admin User',
+      preferences: {
+        activityLevel: 'Medium',
+        budget: 'Moderate',
+        travelStyle: ['Cultural', 'Food'],
+      },
+    });
+
+    const receiverUser = new User({
+      email: 'receiver@mail.com',
+      password: 'receiver1234',
+      name: 'Receiver User',
+      preferences: {
+        activityLevel: 'High',
+        budget: 'Luxury',
+        travelStyle: ['Relaxation', 'Adventure'],
+      },
+    });
+
+    await adminUser.save();
+    await receiverUser.save();
 
     // Insert test travels related to Thailand
     const travels = [
@@ -21,7 +60,7 @@ const insertTestData = async () => {
         startDate: new Date(),
         endDate: new Date(),
         maxCompanions: 5,
-        creator: new mongoose.Types.ObjectId(),
+        creator: adminUser._id,
         preferences: {
           activityLevel: 'Medium',
           budget: 'Moderate',
@@ -35,7 +74,7 @@ const insertTestData = async () => {
         startDate: new Date(),
         endDate: new Date(),
         maxCompanions: 4,
-        creator: new mongoose.Types.ObjectId(),
+        creator: adminUser._id,
         preferences: {
           activityLevel: 'Low',
           budget: 'Budget',
@@ -49,7 +88,7 @@ const insertTestData = async () => {
         startDate: new Date(),
         endDate: new Date(),
         maxCompanions: 6,
-        creator: new mongoose.Types.ObjectId(),
+        creator: adminUser._id,
         preferences: {
           activityLevel: 'High',
           budget: 'Luxury',
@@ -63,7 +102,7 @@ const insertTestData = async () => {
         startDate: new Date(),
         endDate: new Date(),
         maxCompanions: 5,
-        creator: new mongoose.Types.ObjectId(),
+        creator: adminUser._id,
         preferences: {
           activityLevel: 'Medium',
           budget: 'Moderate',
@@ -77,7 +116,7 @@ const insertTestData = async () => {
         startDate: new Date(),
         endDate: new Date(),
         maxCompanions: 4,
-        creator: new mongoose.Types.ObjectId(),
+        creator: adminUser._id,
         preferences: {
           activityLevel: 'Low',
           budget: 'Budget',

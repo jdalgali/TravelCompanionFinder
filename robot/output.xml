@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.1.1 (Python 3.9.19 on darwin)" generated="2024-11-26T17:26:00.535643" rpa="false" schemaversion="5">
+<suite id="s1" name="Frontend Tests" source="/Users/jandalgali/Developer/TravelCompanionFinder/robot/frontend_tests.robot">
+<test id="s1-t1" name="Verify Home Page Loads" line="10">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:00.644385" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<arg>${BASE_URL}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:00.644209" elapsed="1.005343"/>
+</kw>
+<kw name="Title Should Be" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:01.653077" level="INFO">Page title is 'Travel Companion Finder'.</msg>
+<arg>Travel Companion Finder</arg>
+<doc>Verifies that the current page title equals ``title``.</doc>
+<status status="PASS" start="2024-11-26T17:26:01.649983" elapsed="0.003163"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-11-26T17:26:01.653412" elapsed="0.075472"/>
+</kw>
+<status status="PASS" start="2024-11-26T17:26:00.643545" elapsed="1.085468"/>
+</test>
+<test id="s1-t2" name="Login Functionality Test" line="15">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:01.729675" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<arg>${BASE_URL}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:01.729505" elapsed="0.698146"/>
+</kw>
+<kw name="Login To Application">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:02.429570" level="INFO">Opening url 'http://localhost'</msg>
+<arg>${BASE_URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:02.429448" elapsed="0.009145"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:12.875809" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-5.png"&gt;&lt;img src="selenium-screenshot-5.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-11-26T17:26:12.875955" level="FAIL">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</msg>
+<arg>xpath=//button[text()='Login']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2024-11-26T17:26:02.438754" elapsed="10.438513">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.877442" elapsed="0.000025"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='email']</arg>
+<arg>${email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.877533" elapsed="0.000016"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.877603" elapsed="0.000013"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.877668" elapsed="0.000014"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Welcome']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.877733" elapsed="0.000015"/>
+</kw>
+<arg>${EMAIL}</arg>
+<arg>${PASSWORD}</arg>
+<status status="FAIL" start="2024-11-26T17:26:02.429040" elapsed="10.448797">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+</kw>
+<kw name="Element Should Be Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Welcome']</arg>
+<doc>Verifies that the element identified by ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:12.878015" elapsed="0.000027"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-11-26T17:26:12.878209" elapsed="0.088233"/>
+</kw>
+<status status="FAIL" start="2024-11-26T17:26:01.729264" elapsed="11.237320">Element 'xpath=//button[text()='Login']' not visible after 10 seconds.</status>
+</test>
+<test id="s1-t3" name="Navigate to Travel List" line="21">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:12.967533" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<arg>${BASE_URL}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:12.967347" elapsed="0.698215"/>
+</kw>
+<kw name="Login To Application">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:13.666390" level="INFO">Opening url 'http://localhost'</msg>
+<arg>${BASE_URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:13.666296" elapsed="0.011899"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:22.969063" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</msg>
+<msg time="2024-11-26T17:26:22.969411" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</msg>
+<arg>xpath=//button[text()='Login']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2024-11-26T17:26:13.678352" elapsed="9.292895">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</status>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971423" elapsed="0.000025"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='email']</arg>
+<arg>${email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971521" elapsed="0.000018"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971604" elapsed="0.000016"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971677" elapsed="0.000016"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Welcome']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971750" elapsed="0.000015"/>
+</kw>
+<arg>${EMAIL}</arg>
+<arg>${PASSWORD}</arg>
+<status status="FAIL" start="2024-11-26T17:26:13.665994" elapsed="9.305861">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</status>
+</kw>
+<kw name="Click Link" owner="SeleniumLibrary">
+<arg>xpath=//a[@href='/travel-list']</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.971960" elapsed="0.000016"/>
+</kw>
+<kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Travel List']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:22.972055" elapsed="0.000017"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-11-26T17:26:22.972248" elapsed="0.084825"/>
+</kw>
+<status status="FAIL" start="2024-11-26T17:26:12.966953" elapsed="10.090237">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</status>
+</test>
+<test id="s1-t4" name="Create New Travel Entry" line="28">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:23.058081" level="INFO">Opening browser 'Chrome' to base url 'http://localhost'.</msg>
+<arg>${BASE_URL}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:23.057852" elapsed="0.652649"/>
+</kw>
+<kw name="Login To Application">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:23.711367" level="INFO">Opening url 'http://localhost'</msg>
+<arg>${BASE_URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2024-11-26T17:26:23.711262" elapsed="0.024880"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2024-11-26T17:26:26.261500" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f15910&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.267156" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e130&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.269873" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e0a0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.272565" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=57949): Max retries exceeded with url: /session/b2f99aa79378f88b83ec38a88945d395/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102def220&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<arg>xpath=//button[text()='Login']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2024-11-26T17:26:23.736283" elapsed="2.536749">Execution terminated by signal</status>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.274871" elapsed="0.000156"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='email']</arg>
+<arg>${email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.275298" elapsed="0.000043"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='password']</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.275450" elapsed="0.000023"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.275560" elapsed="0.000022"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[text()='Welcome']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.275677" elapsed="0.000023"/>
+</kw>
+<arg>${EMAIL}</arg>
+<arg>${PASSWORD}</arg>
+<status status="FAIL" start="2024-11-26T17:26:23.710919" elapsed="2.565045">Execution terminated by signal</status>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Create New Travel']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.276158" elapsed="0.000023"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//input[@name='destination']</arg>
+<arg>Paris</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.276282" elapsed="0.000083"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//textarea[@name='description']</arg>
+<arg>Trip to Paris in Spring</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.278367" elapsed="0.000069"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//button[text()='Save']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.279323" elapsed="0.000373"/>
+</kw>
+<kw name="Element Should Be Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[text()='Travel entry created successfully']</arg>
+<doc>Verifies that the element identified by ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-11-26T17:26:26.280495" elapsed="0.000348"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<msg time="2024-11-26T17:26:26.283115" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ebb0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+<msg time="2024-11-26T17:26:26.284129" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ecd0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+<msg time="2024-11-26T17:26:26.285341" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102dfe370&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-11-26T17:26:26.281609" elapsed="0.005459"/>
+</kw>
+<status status="FAIL" start="2024-11-26T17:26:23.057537" elapsed="3.229648">Execution terminated by signal</status>
+</test>
+<test id="s1-t5" name="Logout Functionality Test" line="38">
+<tag>robot:exit</tag>
+<status status="FAIL" start="2024-11-26T17:26:26.287940" elapsed="0.000711">Test execution stopped due to a fatal error.</status>
+</test>
+<status status="FAIL" start="2024-11-26T17:26:00.536343" elapsed="25.752843"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="4" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="3" skip="0" info="combined" combined="NOT robot:exit">NOT robot:exit</stat>
+</tag>
+<suite>
+<stat pass="1" fail="4" skip="0" id="s1" name="Frontend Tests">Frontend Tests</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2024-11-26T17:26:22.969063" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=131.0.6778.86)
+Stacktrace:
+0   chromedriver                        0x0000000100d07ac4 cxxbridge1$str$ptr + 3651580
+1   chromedriver                        0x0000000100d00314 cxxbridge1$str$ptr + 3620940
+2   chromedriver                        0x00000001007684b4 cxxbridge1$string$len + 89224
+3   chromedriver                        0x0000000100743994 core::str::slice_error_fail::ha0e52dbcb60e6bae + 3780
+4   chromedriver                        0x00000001007d2890 cxxbridge1$string$len + 524388
+5   chromedriver                        0x00000001007e576c cxxbridge1$string$len + 601920
+6   chromedriver                        0x00000001007a10b0 cxxbridge1$string$len + 321668
+7   chromedriver                        0x00000001007a1d00 cxxbridge1$string$len + 324820
+8   chromedriver                        0x0000000100cd2e08 cxxbridge1$str$ptr + 3435328
+9   chromedriver                        0x0000000100cd6120 cxxbridge1$str$ptr + 3448408
+10  chromedriver                        0x0000000100cba17c cxxbridge1$str$ptr + 3333812
+11  chromedriver                        0x0000000100cd69e0 cxxbridge1$str$ptr + 3450648
+12  chromedriver                        0x0000000100cab988 cxxbridge1$str$ptr + 3274432
+13  chromedriver                        0x0000000100cf10f4 cxxbridge1$str$ptr + 3558956
+14  chromedriver                        0x0000000100cf1270 cxxbridge1$str$ptr + 3559336
+15  chromedriver                        0x0000000100cfff88 cxxbridge1$str$ptr + 3620032
+16  libsystem_pthread.dylib             0x000000019c58f2e4 _pthread_start + 136
+17  libsystem_pthread.dylib             0x000000019c58a0fc thread_start + 8
+</msg>
+<msg time="2024-11-26T17:26:26.261500" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f15910&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.267156" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e130&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.269873" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102f0e0a0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395/screenshot</msg>
+<msg time="2024-11-26T17:26:26.272565" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=57949): Max retries exceeded with url: /session/b2f99aa79378f88b83ec38a88945d395/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102def220&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<msg time="2024-11-26T17:26:26.283115" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ebb0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+<msg time="2024-11-26T17:26:26.284129" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102e7ecd0&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+<msg time="2024-11-26T17:26:26.285341" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x102dfe370&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/b2f99aa79378f88b83ec38a88945d395</msg>
+</errors>
+</robot>
