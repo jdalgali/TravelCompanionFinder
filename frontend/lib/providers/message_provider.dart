@@ -8,7 +8,7 @@ class MessageProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
-  MessageProvider({required String? token})
+  MessageProvider({required String? token, required String apiUrl})
       : _messageService = MessageService(token: token);
 
   List<Message> get messages => [..._messages];

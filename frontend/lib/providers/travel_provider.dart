@@ -8,8 +8,8 @@ class TravelProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
-  TravelProvider({required String? token})
-      : _travelService = TravelService(token: token);
+  TravelProvider({required String? token, required String apiUrl})
+      : _travelService = TravelService(token: token, apiUrl: apiUrl);
 
   List<Travel> get travels => [..._travels];
   bool get isLoading => _isLoading;

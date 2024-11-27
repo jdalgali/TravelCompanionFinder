@@ -7,7 +7,7 @@ class TravelService {
   String? _token;
   static String baseUrl = Config.apiUrl;
 
-  TravelService({String? token}) : _token = token;
+  TravelService({String? token, required String apiUrl}) : _token = token;
 
   void updateToken(String? token) {
     _token = token;
