@@ -34,39 +34,16 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/travels', travelRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/messages', messageRoutes);
-app.use('/api/v1', userRoutes);
+app.use('/api/v1/users', userRoutes);
 
-// Error handlers
-app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    logger.error('Bad JSON:', err);
-    return res.status(400).json({ message: 'Invalid JSON' });
-  }
-  next(err);
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  logger.info('Connected to MongoDB');
+  app.listen(PORT, () => {
+    logger.info(`Server is running on port ${PORT}`);
+  });
+}).catch(err => {
+  logger.error('Failed to connect to MongoDB', err);
 });
-
-app.use((err, req, res, next) => {
-  logger.error('Error:', err);
-  res.status(500).json({ message: 'Internal server error' });
-});
-
-if (env !== 'test') {
-  mongoose
-    .connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000,
-      retryWrites: true
-    })
-    .then(() => {
-      app.listen(PORT, () => {
-        logger.info(`Backend is running in ${env} mode on port ${PORT}`);
-      });
-    })
-    .catch((err) => {
-      logger.error('MongoDB connection error:', err);
-      process.exit(1);
-    });
-}
-
-module.exports = app;

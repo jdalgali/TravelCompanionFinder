@@ -11,40 +11,53 @@ services:
         condition: service_started
 
   frontend:
-    image: orpit/frontend-tcf:latest
-    expose:
-      - "80"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - API_URL=http://tcf-g04.us-east-1.elasticbeanstalk.com/api/v1
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
   backend:
-    image: orpit/backend-tcf:latest
-    expose:
-      - "3000"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
+      - NODE_ENV=development
+      - API_PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/travel_companion
-      - JWT_SECRET=prod-secret-key
-      - CORS_ORIGIN=${CORS_ORIGIN}
+      - JWT_SECRET=your-secret-key
     depends_on:
-      mongodb:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/v1/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      - mongodb
+    command: >
+      sh -c "
+      /wait-for.sh mongodb:27017 -- node insertTestData.js &&
+      node src/index.js
+      "
 
   mongodb:
     image: mongo:latest
+    ports:
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongodb
 
 volumes:
   mongodb_data:

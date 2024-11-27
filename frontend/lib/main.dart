@@ -25,6 +25,8 @@ void main() async {
     ]);
   }
 
+  const String apiUrl = String.fromEnvironment('API_URL', defaultValue: 'http://localhost:3000/api/v1');
+
   runApp(
     MultiProvider(
       providers: [
@@ -32,20 +34,20 @@ void main() async {
           create: (_) => AuthProvider(),
         ),
         ChangeNotifierProxyProvider<AuthProvider, TravelProvider>(
-          create: (context) => TravelProvider(token: null),
+          create: (context) => TravelProvider(token: null, apiUrl: apiUrl),
           update: (context, auth, previousTravels) =>
-              TravelProvider(token: auth.token)..updateToken(auth.token),
+              TravelProvider(token: auth.token, apiUrl: apiUrl)..updateToken(auth.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, MessageProvider>(
-          create: (context) => MessageProvider(token: null),
+          create: (context) => MessageProvider(token: null, apiUrl: apiUrl),
           update: (context, auth, previousMessages) =>
-              MessageProvider(token: auth.token)..updateToken(auth.token),
+              MessageProvider(token: auth.token, apiUrl: apiUrl)..updateToken(auth.token),
         ),
         ChangeNotifierProxyProvider<AuthProvider, ExploreProvider>(
           create: (context) => ExploreProvider(
-              RecommendationService(TravelService(token: null))),
+              RecommendationService(TravelService(token: null, apiUrl: apiUrl))),
           update: (context, auth, previousExplore) => ExploreProvider(
-              RecommendationService(TravelService(token: auth.token))),
+              RecommendationService(TravelService(token: auth.token, apiUrl: apiUrl))),
         ),
       ],
       child: const MyApp(),
