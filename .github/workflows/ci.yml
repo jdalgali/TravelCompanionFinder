@@ -1,125 +1,44 @@
-name: CI/CD
+name: CI Pipeline
 
 on:
   push:
     branches:
-      - "**"
+      - main
   pull_request:
     branches:
-      - "**"
+      - main
 
 jobs:
-  lint:
-    name: Lint and Format
+  build_and_deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        part: [backend, frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        if: matrix.part == 'backend'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies (backend)
-        if: matrix.part == 'backend'
-        run: npm ci
-        working-directory: ./backend
-
-      - name: Run ESLint
-        if: matrix.part == 'backend'
-        run: npm run lint
-        working-directory: ./backend
-
-      - name: Set up Flutter
-        if: matrix.part == 'frontend'
-        uses: subosito/flutter-action@v2
-
-      - name: Disable analytics (frontend)
-        if: matrix.part == 'frontend'
-        run: flutter config --no-analytics
-
-      - name: Install dependencies (frontend)
-        if: matrix.part == 'frontend'
-        run: flutter pub get
-        working-directory: ./frontend
-
-  test:
-    name: Build and Test
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        part: [backend, frontend]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        if: matrix.part == 'backend'
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies (backend)
-        if: matrix.part == 'backend'
-        run: npm ci
-        working-directory: ./backend
-
-      - name: Run tests (backend)
-        if: matrix.part == 'backend'
-        run: npm test
-        working-directory: ./backend
-
-      - name: Set up Flutter
-        if: matrix.part == 'frontend'
-        uses: subosito/flutter-action@v2
-
-      - name: Disable analytics (frontend)
-        if: matrix.part == 'frontend'
-        run: flutter config --no-analytics
-
-      - name: Install dependencies (frontend)
-        if: matrix.part == 'frontend'
-        run: flutter pub get
-        working-directory: ./frontend
-
-      - name: Run tests (frontend)
-        if: matrix.part == 'frontend'
-        run: flutter test
-        working-directory: ./frontend
-
-  docker:
-    name: Build and Push Docker Images
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    environment: DockerHub
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v2
+
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push backend Docker image
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker images
         run: |
-          docker build \
-            --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
-            --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            -t ${{ secrets.DOCKER_USERNAME }}/backend-tcf:latest \
-            ./backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/backend-tcf:latest
-      - name: Build and push frontend Docker image
+          docker buildx build --push --platform linux/amd64,linux/arm64 \
+            --tag ${{ secrets.DOCKER_USERNAME }}/travelcompanionfinder-frontend:latest \
+            --file ./frontend/Dockerfile ./frontend
+          docker buildx build --push --platform linux/amd64,linux/arm64 \
+            --tag ${{ secrets.DOCKER_USERNAME }}/travelcompanionfinder-backend:latest \
+            --file ./backend/Dockerfile ./backend
+
+      - name: Deploy to AWS Elastic Beanstalk
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
         run: |
-          docker build \
-            --build-arg API_URL=http://backend:3000/api/v1 \
-            -t ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest \
-            ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest
+          eb init -p docker travelcompanionfinder --region $AWS_REGION
+          eb deploy
