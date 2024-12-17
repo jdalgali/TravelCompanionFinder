@@ -58,7 +58,7 @@ COPY --from=builder /app/build/web /usr/share/nginx/html
 
 # Create a simple nginx config that handles Flutter routing
 RUN echo 'server { \
-    listen 80; \
+    listen 8080; \
     location / { \
     root /usr/share/nginx/html; \
     index index.html index.htm; \
