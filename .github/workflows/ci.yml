@@ -35,7 +35,7 @@ jobs:
       - name: Build and push frontend Docker image
         run: |
           docker build \
-            --build-arg API_URL=http://tcf-g04-env.us-east-1.elasticbeanstalk.com/api \
+            --build-arg API_URL=http://tcf-g04-env.us-east-1.elasticbeanstalk.com/api/v1 \
             -t ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest \
             ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend-tcf:latest
